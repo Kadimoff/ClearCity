@@ -45,14 +45,17 @@ class Command(BaseCommand):
         departments = {}
         for dept_data in departments_data:
             dept, created = Department.objects.get_or_create(
-                email=dept_data['email'],
+                name=dept_data['name'],
                 defaults=dept_data
             )
+            if not created and dept.email != dept_data['email']:
+                dept.email = dept_data['email']
+                dept.save(update_fields=['email'])
             departments[dept_data['name']] = dept
             if created:
                 self.stdout.write(f'Created department: {dept.name}')
             else:
-                self.stdout.write(f'Department already exists: {dept.name}')
+                self.stdout.write(f'Updated department: {dept.name} ({dept.email})')
         
         # Create categories with department mappings
         categories_data = [
@@ -108,9 +111,12 @@ class Command(BaseCommand):
                 slug=cat_data['slug'],
                 defaults={**cat_data, 'department': dept}
             )
+            if not created and cat.department != dept:
+                cat.department = dept
+                cat.save(update_fields=['department'])
             if created:
                 self.stdout.write(f'Created category: {cat.name}')
             else:
-                self.stdout.write(f'Category already exists: {cat.name}')
+                self.stdout.write(f'Category updated: {cat.name} -> {dept.name if dept else None}')
         
         self.stdout.write(self.style.SUCCESS('Successfully seeded initial data'))

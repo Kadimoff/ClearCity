@@ -174,13 +174,19 @@ def classify_image_with_openai(image_path=None):
 
 def real_classify_image(image_path=None):
     """
-    Always use real OpenAI AI classification without any fallback.
+    Use real OpenAI AI classification if available and valid;
+    gracefully fall back to local classification if API error occurs.
     """
     if OPENAI_CLIENT is None:
-        raise RuntimeError('OpenAI client is not configured. Set OPENAI_API_KEY in environment.')
+        print('WARNING: OpenAI client is not configured. Falling back to local classification.')
+        return mock_classify_image(image_path)
 
-    print('Using real OpenAI AI classification...')
-    return classify_image_with_openai(image_path)
+    try:
+        print('Using real OpenAI AI classification...')
+        return classify_image_with_openai(image_path)
+    except Exception as exc:
+        print(f'ERROR: OpenAI classification failed ({exc}). Falling back to local classification.')
+        return mock_classify_image(image_path)
 
 
 def classify_image(image_path=None):
