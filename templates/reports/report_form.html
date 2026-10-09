@@ -46,8 +46,8 @@
 <section class="report-section">
     <div class="report-container">
         <div class="report-header">
-            <h1>Problem haqqında bildirin</h1>
-            <p>Fotonu çəkin və ya qalereyadan yükləyin — dəqiq lokasiya və ünvan avtomatik müəyyən olunacaq</p>
+            <h1 data-i18n="report_title">Problem haqqında bildirin</h1>
+            <p data-i18n="report_subtitle">Fotonu çəkin və ya qalereyadan yükləyin — dəqiq lokasiya və ünvan avtomatik müəyyən olunacaq</p>
         </div>
 
         <form method="post" action="{% url 'submit_report' %}" enctype="multipart/form-data" class="report-form"
@@ -66,7 +66,7 @@
             <!-- Photo Mode Selector -->
             <div class="form-group">
                 <label class="form-label">
-                    Foto mənbəyi və çəkiliş <span>*</span>
+                    <span data-i18n="photo_source_label">Foto mənbəyi və çəkiliş</span> <span>*</span>
                 </label>
                 
                 <div class="photo-source-selector">
@@ -75,8 +75,8 @@
                             <i class="fas fa-camera"></i>
                         </div>
                         <div class="source-text-wrap">
-                            <span class="source-title">Şəkil çək</span>
-                            <span class="source-subtitle">Kamera ilə dərhal çəkin (dəqiq GPS)</span>
+                            <span class="source-title" data-i18n="take_photo">Şəkil çək</span>
+                            <span class="source-subtitle" data-i18n="take_photo_hint">Kamera ilə dərhal çəkin (dəqiq GPS)</span>
                         </div>
                     </button>
 
@@ -85,8 +85,8 @@
                             <i class="fas fa-images"></i>
                         </div>
                         <div class="source-text-wrap">
-                            <span class="source-title">Şəkil yüklə</span>
-                            <span class="source-subtitle">Qalereyadan seçin (GPS metadatası)</span>
+                            <span class="source-title" data-i18n="upload_photo">Şəkil yüklə</span>
+                            <span class="source-subtitle" data-i18n="upload_photo_hint">Qalereyadan seçin (GPS metadatası)</span>
                         </div>
                     </button>
                 </div>
@@ -96,15 +96,15 @@
                     <div class="upload-icon" id="uploadIcon">
                         <i class="fas fa-camera"></i>
                     </div>
-                    <p class="upload-text" id="uploadText">Kameranı açmaq və foto çəkmək üçün klikləyin</p>
-                    <p class="upload-hint" id="uploadHint">Çəkiliş anında dəqiq GPS koordinatları qeyd ediləcək</p>
+                    <p class="upload-text" id="uploadText" data-i18n="upload_text_camera">Kameranı açmaq və foto çəkmək üçün klikləyin</p>
+                    <p class="upload-hint" id="uploadHint" data-i18n="upload_hint_camera">Çəkiliş anında dəqiq GPS koordinatları qeyd ediləcək</p>
                 </div>
 
                 <!-- Preview Box -->
                 <div class="preview-container" id="previewContainer">
                     <img id="uploadPreview" class="preview-image" alt="Önizləmə">
                     <button type="button" class="btn-change-photo" id="changePhotoBtn">
-                        <i class="fas fa-redo"></i> Fotonu dəyişdir
+                        <i class="fas fa-redo"></i> <span data-i18n="change_photo">Fotonu dəyişdir</span>
                     </button>
                 </div>
 
@@ -118,14 +118,14 @@
             <!-- Address and Interactive Map -->
             <div class="form-group">
                 <label for="address" class="form-label">
-                    Problemin ünvanı və dəqiq məkanı <span>*</span>
+                    <span data-i18n="address_label">Problemin ünvanı və dəqiq məkanı</span> <span>*</span>
                 </label>
                 <div style="display: flex; gap: var(--space-sm);">
                     <input type="text" id="address" name="address" class="form-input"
-                        placeholder="Məsələn: Nizami küçəsi, 45, Yasamal rayonu" required>
+                        placeholder="Məsələn: Nizami küçəsi, 45, Yasamal rayonu" data-i18n-placeholder="address_placeholder" required>
                     <button type="button" class="gps-button" id="gpsBtn" title="Cihazın cari məkanını götür" style="white-space: nowrap;">
                         <i class="fas fa-location-arrow"></i>
-                        <span>Cari Məkan</span>
+                        <span data-i18n="current_location">Cari Məkan</span>
                     </button>
                 </div>
                 <p class="gps-status" id="gpsStatus"></p>
@@ -133,8 +133,8 @@
                 <!-- Interactive Leaflet Map -->
                 <div class="map-picker-box">
                     <div class="map-picker-header">
-                        <span><i class="fas fa-map-marked-alt"></i> Dəqiq Məkan Xəritəsi</span>
-                        <small style="color: var(--color-text-muted);">Xəritəyə toxunaraq nöqtəni dəqiqləşdirə bilərsiniz</small>
+                        <span><i class="fas fa-map-marked-alt"></i> <span data-i18n="map_title">Dəqiq Məkan Xəritəsi</span></span>
+                        <small style="color: var(--color-text-muted);" data-i18n="map_hint">Xəritəyə toxunaraq nöqtəni dəqiqləşdirə bilərsiniz</small>
                     </div>
                     <div id="interactiveMap" style="height: 250px; width: 100%;"></div>
                 </div>
@@ -143,21 +143,21 @@
             <!-- Description -->
             <div class="form-group">
                 <label for="description" class="form-label">
-                    Problemin təsviri <span>*</span>
+                    <span data-i18n="description_label">Problemin təsviri</span> <span>*</span>
                 </label>
                 <textarea id="description" name="description" class="form-textarea"
-                    placeholder="Problemi daha ətraflı təsvir edin: nə vaxt yarandı, nə qədər kritikdir və s."
+                    placeholder="Problemi daha ətraflı təsvir edin: nə vaxt yarandı, nə qədər kritikdir və s." data-i18n-placeholder="description_placeholder"
                     required></textarea>
             </div>
 
             <!-- Citizen Email (optional) -->
             <div class="form-group">
                 <label for="citizen_email" class="form-label">
-                    E-poçt ünvanı <span style="font-weight:400;color:#6b7280;font-size:0.85em;">(isteğe bağlı)</span>
+                    <span data-i18n="email_label">E-poçt ünvanı</span> <span style="font-weight:400;color:#6b7280;font-size:0.85em;" data-i18n="email_optional">(isteğe bağlı)</span>
                 </label>
                 <input type="email" id="citizen_email" name="citizen_email" class="form-input"
-                    placeholder="Müraciət statusu dəyişdikdə bildiriş almaq üçün">
-                <p style="font-size:0.82rem;color:#9ca3af;margin-top:4px;">
+                    placeholder="Müraciət statusu dəyişdikdə bildiriş almaq üçün" data-i18n-placeholder="email_placeholder">
+                <p style="font-size:0.82rem;color:#9ca3af;margin-top:4px;" data-i18n="email_hint">
                     Doldurulsa, statusunuz dəyişdikdə sizə e-poçt göndəriləcək.
                 </p>
             </div>
@@ -167,7 +167,7 @@
                 <span class="spinner"></span>
                 <span class="btn-text">
                     <i class="fas fa-paper-plane"></i>
-                    Müraciət göndərin
+                    <span data-i18n="submit_btn">Müraciət göndərin</span>
                 </span>
             </button>
         </form>
@@ -280,15 +280,15 @@
                 cameraTab.classList.add('active');
                 galleryTab.classList.remove('active');
                 uploadIcon.innerHTML = '<i class="fas fa-camera"></i>';
-                uploadText.textContent = 'Kameranı açmaq və foto çəkmək üçün klikləyin';
-                uploadHint.textContent = 'Çəkiliş anında dəqiq GPS koordinatları qeyd ediləcək';
+                uploadText.textContent = window.I18N.t('upload_text_camera');
+                uploadHint.textContent = window.I18N.t('upload_hint_camera');
                 preFetchCameraLocation();
             } else {
                 galleryTab.classList.add('active');
                 cameraTab.classList.remove('active');
                 uploadIcon.innerHTML = '<i class="fas fa-images"></i>';
-                uploadText.textContent = 'Qalereyadan və ya fayllardan seçmək üçün klikləyin';
-                uploadHint.textContent = 'Şəkildəki GPS meta-məlumatı avtomatik oxunacaq';
+                uploadText.textContent = window.I18N.t('upload_text_gallery');
+                uploadHint.textContent = window.I18N.t('upload_hint_gallery');
             }
         }
 

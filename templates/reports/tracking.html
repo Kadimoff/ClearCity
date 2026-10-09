@@ -42,41 +42,41 @@
                     
                     <div style="display: grid; gap: var(--space-md);">
                         <div style="display: flex; justify-content: space-between; padding: var(--space-sm) 0; border-bottom: 1px solid var(--color-border);">
-                            <span style="color: var(--color-text-muted);">Kateqoriya</span>
+                            <span style="color: var(--color-text-muted);" data-i18n="label_category">Kateqoriya</span>
                             <span style="font-weight: 500;">{{ report.category.name|default:"Müəyyən edilməyib" }}</span>
                         </div>
                         <div style="display: flex; justify-content: space-between; padding: var(--space-sm) 0; border-bottom: 1px solid var(--color-border);">
-                            <span style="color: var(--color-text-muted);">Prioritet</span>
+                            <span style="color: var(--color-text-muted);" data-i18n="label_priority">Prioritet</span>
                             <span class="priority-badge priority-{{ report.priority }}">{{ report.get_priority_display }}</span>
                         </div>
                         <div style="display: flex; justify-content: space-between; padding: var(--space-sm) 0; border-bottom: 1px solid var(--color-border);">
-                            <span style="color: var(--color-text-muted);">İdarə</span>
+                            <span style="color: var(--color-text-muted);" data-i18n="label_department">İdarə</span>
                             <span style="font-weight: 500;">{{ report.department.name|default:"Təyin edilməyib" }}</span>
                         </div>
                         <div style="display: flex; justify-content: space-between; padding: var(--space-sm) 0; border-bottom: 1px solid var(--color-border);">
-                            <span style="color: var(--color-text-muted);">Ünvan</span>
+                            <span style="color: var(--color-text-muted);" data-i18n="label_address">Ünvan</span>
                             <span style="font-weight: 500; text-align: right;">{{ report.address }}</span>
                         </div>
                         {% if report.photo_source %}
                         <div style="display: flex; justify-content: space-between; padding: var(--space-sm) 0; border-bottom: 1px solid var(--color-border);">
-                            <span style="color: var(--color-text-muted);">Foto Mənbəyi</span>
+                            <span style="color: var(--color-text-muted);" data-i18n="label_photo_source">Foto Mənbəyi</span>
                             <span style="font-weight: 500;">{{ report.get_photo_source_display }}</span>
                         </div>
                         {% endif %}
                         {% if report.has_exif_location %}
                         <div style="display: flex; justify-content: space-between; padding: var(--space-sm) 0; border-bottom: 1px solid var(--color-border);">
-                            <span style="color: var(--color-text-muted);">GPS Doğrulaması</span>
-                            <span style="color: #10b981; font-weight: 600;"><i class="fas fa-check-circle"></i> EXIF Metadatası ilə</span>
+                            <span style="color: var(--color-text-muted);" data-i18n="label_gps_verified">GPS Doğrulaması</span>
+                            <span style="color: #10b981; font-weight: 600;"><i class="fas fa-check-circle"></i> <span data-i18n="gps_exif_verified">EXIF Metadatası ilə</span></span>
                         </div>
                         {% endif %}
                         {% if report.camera_model %}
                         <div style="display: flex; justify-content: space-between; padding: var(--space-sm) 0; border-bottom: 1px solid var(--color-border);">
-                            <span style="color: var(--color-text-muted);">Cihaz</span>
+                            <span style="color: var(--color-text-muted);" data-i18n="label_device">Cihaz</span>
                             <span style="font-weight: 500;">{{ report.camera_model }}</span>
                         </div>
                         {% endif %}
                         <div style="display: flex; justify-content: space-between; padding: var(--space-sm) 0;">
-                            <span style="color: var(--color-text-muted);">Yaradılıb</span>
+                            <span style="color: var(--color-text-muted);" data-i18n="label_created">Yaradılıb</span>
                             <span style="font-weight: 500;">{{ report.created_at|date:"d.m.Y H:i" }}</span>
                         </div>
                     </div>
@@ -93,7 +93,7 @@
                     <div style="padding: var(--space-lg) var(--space-xl); border-bottom: 1px solid var(--color-border);">
                         <h3 style="font-size: var(--font-size-lg); font-weight: 600;">
                             <i class="fas fa-map-marker-alt" style="color: var(--color-primary); margin-right: var(--space-sm);"></i>
-                            Məkan
+                            <span data-i18n="location_title">Məkan</span>
                         </h3>
                     </div>
                     <div id="map" style="height: 350px;"></div>
@@ -108,15 +108,15 @@
                 <div style="background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); border-radius: var(--radius-xl); padding: var(--space-xl); color: white;">
                     <div style="display: flex; align-items: center; gap: var(--space-sm); margin-bottom: var(--space-md);">
                         <i class="fas fa-robot" style="font-size: var(--font-size-xl);"></i>
-                        <h3 style="font-size: var(--font-size-lg); font-weight: 600;">AI Təsnifatı</h3>
+                        <h3 style="font-size: var(--font-size-lg); font-weight: 600;"><span data-i18n="ai_classification">AI Təsnifatı</span></h3>
                     </div>
                     <div style="display: grid; gap: var(--space-md);">
                         <div style="display: flex; justify-content: space-between; padding: var(--space-sm) 0; border-bottom: 1px solid rgba(255,255,255,0.2);">
-                            <span style="opacity: 0.9;">Kateqoriya</span>
+                            <span style="opacity: 0.9;" data-i18n="ai_category">Kateqoriya</span>
                             <span style="font-weight: 600;">{{ ai_classification.category_predicted }}</span>
                         </div>
                         <div style="display: flex; justify-content: space-between; padding: var(--space-sm) 0;">
-                            <span style="opacity: 0.9;">Əminlik</span>
+                            <span style="opacity: 0.9;" data-i18n="ai_confidence">Əminlik</span>
                             <span style="font-weight: 600;" id="confidence-value">{{ ai_classification.confidence|floatformat:2 }}</span>
                         </div>
                     </div>
@@ -127,7 +127,7 @@
                 <div style="background: white; border-radius: var(--radius-xl); padding: var(--space-xl); box-shadow: var(--shadow-lg);">
                     <h3 style="font-size: var(--font-size-lg); font-weight: 600; margin-bottom: var(--space-lg);">
                         <i class="fas fa-history" style="color: var(--color-primary); margin-right: var(--space-sm);"></i>
-                        Status tarixçəsi
+                        <span data-i18n="status_history">Status tarixçəsi</span>
                     </h3>
                     
                     {% if status_history %}
@@ -145,14 +145,14 @@
                             {% endfor %}
                         </div>
                     {% else %}
-                        <p style="color: var(--color-text-muted); text-align: center; padding: var(--space-lg);">Tarixçə hələlik boşdur</p>
+                        <p style="color: var(--color-text-muted); text-align: center; padding: var(--space-lg);" data-i18n="history_empty">Tarixçə hələlik boşdur</p>
                     {% endif %}
                 </div>
                 
                 <!-- Save Bookmark -->
                 <div style="background: var(--color-bg-alt); border-radius: var(--radius-lg); padding: var(--space-lg); text-align: center;">
                     <i class="fas fa-bookmark" style="color: var(--color-primary); font-size: var(--font-size-xl); margin-bottom: var(--space-sm);"></i>
-                    <p style="font-size: var(--font-size-sm); color: var(--color-text-light); margin: 0;">
+                    <p style="font-size: var(--font-size-sm); color: var(--color-text-light); margin: 0;" data-i18n="bookmark_hint">
                         Statusu istənilən vaxt izləmək üçün bu səhifəni yadda saxlayın
                     </p>
                 </div>

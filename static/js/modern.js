@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Initialize global modules
     initNavbar();
     initScrollAnimations();
+    initThemeToggle();
 
     // Only run legacy form handlers if modern camera tab is not present
     if (!document.getElementById('cameraTab')) {
@@ -333,6 +334,43 @@ function showGPSStatus(message, type) {
     } else {
         gpsStatus.style.color = 'var(--color-text-light)';
     }
+}
+
+/**
+ * Theme Toggle - Dark/Light Mode
+ */
+function initThemeToggle() {
+    const themeToggle = document.getElementById('themeToggle');
+    const moonIcon = document.getElementById('moonIcon');
+    const sunIcon = document.getElementById('sunIcon');
+    const html = document.documentElement;
+
+    if (!themeToggle) return;
+
+    // Check for saved theme preference or system preference
+    const savedTheme = localStorage.getItem('clearcity-theme');
+    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+    if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+        html.classList.add('dark-mode');
+        moonIcon.style.display = 'none';
+        sunIcon.style.display = 'inline';
+    }
+
+    // Toggle theme on button click
+    themeToggle.addEventListener('click', function () {
+        if (html.classList.contains('dark-mode')) {
+            html.classList.remove('dark-mode');
+            localStorage.removeItem('clearcity-theme');
+            moonIcon.style.display = 'inline';
+            sunIcon.style.display = 'none';
+        } else {
+            html.classList.add('dark-mode');
+            localStorage.setItem('clearcity-theme', 'dark');
+            moonIcon.style.display = 'none';
+            sunIcon.style.display = 'inline';
+        }
+    });
 }
 
 /**

@@ -1,0 +1,7 @@
+{
+  "/_not-found/page": "/_not-found",
+  "/department/[token]/page": "/department/[token]",
+  "/report/page": "/report",
+  "/track/[token]/page": "/track/[token]",
+  "/page": "/"
+}

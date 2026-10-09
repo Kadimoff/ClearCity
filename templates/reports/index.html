@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}ClearCity — Ağıllı şəhər sizinlə başlayır{% endblock %}
+{% block title %}CityAssist — Ağıllı şəhər sizinlə başlayır{% endblock %}
 
 {% block content %}
 <!-- Hero Section -->
@@ -10,17 +10,17 @@
         <div class="hero-card">
             <div class="hero-badge">
                 <i class="fas fa-sparkles"></i>
-                AI-powered şəhər platforması
+                <span data-i18n="hero_badge">AI-powered şəhər platforması</span>
             </div>
             <h1 class="hero-title">
-                ClearCity — <span>ağıllı şəhər</span> bir foto ilə başlayır
+                CityAssist — <span data-i18n="hero_title_2">ağıllı şəhər</span> <span data-i18n="hero_title_3">bir foto ilə başlayır</span>
             </h1>
-            <p class="hero-subtitle">
+            <p class="hero-subtitle" data-i18n="hero_subtitle">
                 Şəhər problemləri haqqında məlumat verin. Süni intellekt avtomatik olaraq 
                 problemi müəyyən edəcək və uyğun idarəyə göndərəcək.
             </p>
             <a href="{% url 'report' %}" class="hero-cta">
-                Problem haqqında bildirin
+                <span data-i18n="hero_cta">Problem haqqında bildirin</span>
                 <i class="fas fa-arrow-right"></i>
             </a>
         </div>
@@ -31,9 +31,9 @@
 <section class="section section-alt">
     <div class="section-container">
         <div class="section-header fade-in">
-            <span class="section-label">Bu necə işləyir</span>
-            <h2 class="section-title">Cəmi 4 sadə addım</h2>
-            <p class="section-subtitle">
+            <span class="section-label" data-i18n="how_it_works_label">Bu necə işləyir</span>
+            <h2 class="section-title" data-i18n="how_it_works_title">Cəmi 4 sadə addım</h2>
+            <p class="section-subtitle" data-i18n="how_it_works_subtitle">
                 Fotoşəkildən problemin həllinə qədər — sadə və şəffaf proses
             </p>
         </div>
@@ -44,8 +44,8 @@
                 <div class="step-icon">
                     <i class="fas fa-camera"></i>
                 </div>
-                <h3 class="step-title">Foto çəkin</h3>
-                <p class="step-description">
+                <h3 class="step-title" data-i18n="step1_title">Foto çəkin</h3>
+                <p class="step-description" data-i18n="step1_desc">
                     Şəhər problemini fotoşəkil edin — çuxur, sıradan çıxmış işıq, zibil yığımı və ya digərləri
                 </p>
             </div>
@@ -55,8 +55,8 @@
                 <div class="step-icon">
                     <i class="fas fa-robot"></i>
                 </div>
-                <h3 class="step-title">AI təhlil edir</h3>
-                <p class="step-description">
+                <h3 class="step-title" data-i18n="step2_title">AI təhlil edir</h3>
+                <p class="step-description" data-i18n="step2_desc">
                     Sistemimiz avtomatik olaraq problem növünü və prioriteti müəyyən edir
                 </p>
             </div>
@@ -66,8 +66,8 @@
                 <div class="step-icon">
                     <i class="fas fa-paper-plane"></i>
                 </div>
-                <h3 class="step-title">İdarəyə göndərilmə</h3>
-                <p class="step-description">
+                <h3 class="step-title" data-i18n="step3_title">İdarəyə göndərilmə</h3>
+                <p class="step-description" data-i18n="step3_desc">
                     Müraciət avtomatik olaraq uyğun şəhər idarəsinə yönləndirilir
                 </p>
             </div>
@@ -77,8 +77,8 @@
                 <div class="step-icon">
                     <i class="fas fa-chart-line"></i>
                 </div>
-                <h3 class="step-title">Statusu izləyin</h3>
-                <p class="step-description">
+                <h3 class="step-title" data-i18n="step4_title">Statusu izləyin</h3>
+                <p class="step-description" data-i18n="step4_desc">
                     Şəxsi link vasitəsilə problemin həlli prosesini izləyin
                 </p>
             </div>
@@ -90,9 +90,9 @@
 <section class="section">
     <div class="section-container">
         <div class="section-header fade-in">
-            <span class="section-label">Kateqoriyalar</span>
-            <h2 class="section-title">Hansı problemləri həll edirik</h2>
-            <p class="section-subtitle">
+            <span class="section-label" data-i18n="categories_label">Kateqoriyalar</span>
+            <h2 class="section-title" data-i18n="categories_title">Hansı problemləri həll edirik</h2>
+            <p class="section-subtitle" data-i18n="categories_subtitle">
                 Yollardan işıqlandırmaya qədər — bütün əsas şəhər problemlərini əhatə edirik
             </p>
         </div>
@@ -103,8 +103,8 @@
                     <i class="fas fa-road"></i>
                 </div>
                 <div class="category-content">
-                    <h3>Yollardakı çuxurlar</h3>
-                    <p>Yol örtüyünün zədələnməsi, çuxurlar, çatlar</p>
+                    <h3 data-i18n="cat_potholes">Yollardakı çuxurlar</h3>
+                    <p data-i18n="cat_potholes_desc">Yol örtüyünün zədələnməsi, çuxurlar, çatlar</p>
                 </div>
             </div>
             
@@ -113,8 +113,8 @@
                     <i class="fas fa-lightbulb"></i>
                 </div>
                 <div class="category-content">
-                    <h3>İşıqlandırma</h3>
-                    <p>Sıradan çıxmış işıqlar, işıqlandırmanın olmaması, yanıb-sönmə</p>
+                    <h3 data-i18n="cat_lighting">İşıqlandırma</h3>
+                    <p data-i18n="cat_lighting_desc">Sıradan çıxmış işıqlar, işıqlandırmanın olmaması, yanıb-sönmə</p>
                 </div>
             </div>
             
@@ -123,8 +123,8 @@
                     <i class="fas fa-trash-alt"></i>
                 </div>
                 <div class="category-content">
-                    <h3>Zibil yığınları</h3>
-                    <p>Qanunsız zibil yığınları, dolmuş zibil qutuları</p>
+                    <h3 data-i18n="cat_garbage">Zibil yığınları</h3>
+                    <p data-i18n="cat_garbage_desc">Qanunsuz zibil yığınları, dolmuş zibil qutuları</p>
                 </div>
             </div>
             
@@ -133,8 +133,8 @@
                     <i class="fas fa-tint"></i>
                 </div>
                 <div class="category-content">
-                    <h3>Su sızıntıları</h3>
-                    <p>Boruların partlaması, daşqınlar, sızıntılar</p>
+                    <h3 data-i18n="cat_water">Su sızıntıları</h3>
+                    <p data-i18n="cat_water_desc">Boruların partlaması, daşqınlar, sızıntılar</p>
                 </div>
             </div>
             
@@ -143,8 +143,8 @@
                     <i class="fas fa-tools"></i>
                 </div>
                 <div class="category-content">
-                    <h3>Sıradan çıxmış infrastruktur</h3>
-                    <p>Skamyalar, hasarlar, yol nişanları, plitələr</p>
+                    <h3 data-i18n="cat_infrastructure">Sıradan çıxmış infrastruktur</h3>
+                    <p data-i18n="cat_infrastructure_desc">Skamyalar, hasarlar, yol nişanları, plitələr</p>
                 </div>
             </div>
             
@@ -153,8 +153,8 @@
                     <i class="fas fa-spray-can"></i>
                 </div>
                 <div class="category-content">
-                    <h3>Qrafiti</h3>
-                    <p>Qanunsuz yazılar və şəkillər</p>
+                    <h3 data-i18n="cat_graffiti">Qrafiti</h3>
+                    <p data-i18n="cat_graffiti_desc">Qanunsuz yazılar və şəkillər</p>
                 </div>
             </div>
             
@@ -163,8 +163,8 @@
                     <i class="fas fa-tree"></i>
                 </div>
                 <div class="category-content">
-                    <h3>Təhlükəli ağaclar</h3>
-                    <p>Devrilmiş ağaclar, təhlükəli budaqlar, köklər</p>
+                    <h3 data-i18n="cat_trees">Təhlükəli ağaclar</h3>
+                    <p data-i18n="cat_trees_desc">Devrilmiş ağaclar, təhlükəli budaqlar, köklər</p>
                 </div>
             </div>
             
@@ -173,8 +173,8 @@
                     <i class="fas fa-ellipsis-h"></i>
                 </div>
                 <div class="category-content">
-                    <h3>Və digərləri</h3>
-                    <p>Bütün digər şəhər problemləri</p>
+                    <h3 data-i18n="cat_others">Və digərləri</h3>
+                    <p data-i18n="cat_others_desc">Bütün digər şəhər problemləri</p>
                 </div>
             </div>
         </div>
@@ -185,9 +185,9 @@
 <section class="section section-alt">
     <div class="section-container">
         <div class="section-header fade-in">
-            <span class="section-label">Üstünlüklər</span>
-            <h2 class="section-title">Niyə bu işləyir</h2>
-            <p class="section-subtitle">
+            <span class="section-label" data-i18n="benefits_label">Üstünlüklər</span>
+            <h2 class="section-title" data-i18n="benefits_title">Niyə bu işləyir</h2>
+            <p class="section-subtitle" data-i18n="benefits_subtitle">
                 Sistemimizin üç əsas üstünlüyü
             </p>
         </div>
@@ -197,8 +197,8 @@
                 <div class="benefit-icon">
                     <i class="fas fa-route"></i>
                 </div>
-                <h3 class="benefit-title">Avtomatik yönləndirmə</h3>
-                <p class="benefit-description">
+                <h3 class="benefit-title" data-i18n="benefit1_title">Avtomatik yönləndirmə</h3>
+                <p class="benefit-description" data-i18n="benefit1_desc">
                     Süni intellekt avtomatik olaraq problem növünü müəyyən edir və müraciəti 
                     gecikmə və səhv olmadan uyğun idarəyə göndərir.
                 </p>
@@ -208,8 +208,8 @@
                 <div class="benefit-icon">
                     <i class="fas fa-eye"></i>
                 </div>
-                <h3 class="benefit-title">Şəffaf nəzarət</h3>
-                <p class="benefit-description">
+                <h3 class="benefit-title" data-i18n="benefit2_title">Şəffaf nəzarət</h3>
+                <p class="benefit-description" data-i18n="benefit2_desc">
                     Müraciətinizin statusunu real vaxtda izləyin. 
                     Dəyişikliklərin tam tarixi unikal link vasitəsilə əlçatandır.
                 </p>
@@ -219,8 +219,8 @@
                 <div class="benefit-icon">
                     <i class="fas fa-bolt"></i>
                 </div>
-                <h3 class="benefit-title">Sürətli reaksiya</h3>
-                <p class="benefit-description">
+                <h3 class="benefit-title" data-i18n="benefit3_title">Sürətli reaksiya</h3>
+                <p class="benefit-description" data-i18n="benefit3_desc">
                     Məsul xidmətlərin ani bildirişi. 
                     Kritik problemlər üçün yüksək prioritet.
                 </p>
@@ -231,16 +231,16 @@
 
 <!-- CTA Section -->
 <section class="section" style="background: var(--gradient-hero); position: relative;">
-    <div style="position: absolute; inset: 0; background: url(&quot;data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E&quot;); opacity: 0.5;"></div>
+    <div style="position: absolute; inset: 0; background: url(&quot;data:image/svg+xml,...&quot;); opacity: 0.5;"></div>
     <div class="section-container" style="position: relative; z-index: 1; text-align: center;">
-        <h2 class="section-title" style="color: white; margin-bottom: var(--space-lg);">
+        <h2 class="section-title" style="color: white; margin-bottom: var(--space-lg);" data-i18n="cta_title">
             Şəhəri daha yaxşı etməyə hazırsınız?
         </h2>
-        <p style="color: rgba(255,255,255,0.9); font-size: var(--font-size-xl); margin-bottom: var(--space-2xl);">
+        <p style="color: rgba(255,255,255,0.9); font-size: var(--font-size-xl); margin-bottom: var(--space-2xl);" data-i18n="cta_subtitle">
             Bir foto problemi həll etmə prosesini işə sala bilər
         </p>
         <a href="{% url 'report' %}" class="hero-cta" style="background: white; color: var(--color-primary);">
-            Problem haqqında bildirin
+            <span data-i18n="hero_cta">Problem haqqında bildirin</span>
             <i class="fas fa-arrow-right"></i>
         </a>
     </div>

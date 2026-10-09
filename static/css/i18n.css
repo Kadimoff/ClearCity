@@ -1,0 +1,73 @@
+/* ========================================
+   Language Switcher — Theme Responsive
+   ======================================== */
+
+.lang-switcher {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    padding: 3px;
+    background: var(--control-bg);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border);
+    transition: background-color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.lang-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 12px;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    font-weight: 600;
+    font-family: var(--font-family);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    color: var(--color-text-muted);
+    background: transparent;
+    letter-spacing: 0.5px;
+    line-height: 1;
+    white-space: nowrap;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.lang-btn:hover {
+    color: var(--color-text);
+    background: var(--control-hover-bg);
+}
+
+.lang-btn.active {
+    color: #ffffff !important;
+    background: var(--gradient-primary) !important;
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.35);
+}
+
+.lang-btn:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+/* Mobile: full-width in hamburger menu */
+@media (max-width: 768px) {
+    .lang-switcher {
+        width: 100%;
+        justify-content: center;
+        margin-top: 16px;
+        padding: 6px;
+    }
+
+    .lang-btn {
+        flex: 1;
+        padding: 10px 0;
+        font-size: 14px;
+    }
+}
+
+/* Tablet and up */
+@media (min-width: 769px) {
+    .lang-switcher {
+        margin-left: 12px;
+    }
+}
