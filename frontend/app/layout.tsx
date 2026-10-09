@@ -4,6 +4,7 @@ import { LanguageProvider } from '@/context/LanguageContext';
 import { ThemeProvider } from '@/context/ThemeContext';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
+import { PageLoadingBar } from '@/components/PageLoadingBar';
 
 export const metadata: Metadata = {
   title: 'ClearCity — Smart City Issue Reporting',
@@ -23,6 +24,7 @@ export default function RootLayout({
       <body className="antialiased min-h-screen flex flex-col" suppressHydrationWarning>
         <ThemeProvider>
           <LanguageProvider>
+            <PageLoadingBar />
             <Navbar />
             <main className="flex-1 pt-16">{children}</main>
             <Footer />

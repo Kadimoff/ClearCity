@@ -1,14 +1,1 @@
-{
-  "app/report/page.tsx -> @/components/LocationPickerMap": {
-    "id": "app/report/page.tsx -> @/components/LocationPickerMap",
-    "files": [
-      "static/chunks/_app-pages-browser_components_LocationPickerMap_tsx.js"
-    ]
-  },
-  "components/LocationPickerMap.tsx -> leaflet": {
-    "id": "components/LocationPickerMap.tsx -> leaflet",
-    "files": [
-      "static/chunks/_app-pages-browser_node_modules_leaflet_dist_leaflet-src_js.js"
-    ]
-  }
-}
+{}

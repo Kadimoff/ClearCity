@@ -18,6 +18,11 @@ export const dictionary: Record<Language, Record<string, string>> = {
     typed_4: 'daha təmiz və təhlükəsiz məhəllələr üçün vətəndaş təşəbbüsü.',
     typed_5: 'şəxsi linklə real vaxtda şəffaf icra izləməsi.',
 
+    // Process section
+    process_badge: 'Sadə Proses',
+    process_title: 'Daha Təmiz Şəhər Üçün 4 Addım',
+    process_subtitle: 'Fotonun çəkilməsindən sürətli həllə qədər',
+
     step1_title: 'Foto Çəkin',
     step1_desc: 'Şəhər problemini fotoşəkil edin — yol çuxuru, xarab küçə işığı və ya zibil yığımı.',
     step2_title: 'AI Təhlili',
@@ -27,14 +32,46 @@ export const dictionary: Record<Language, Record<string, string>> = {
     step4_title: 'Statusu İzləyin',
     step4_desc: 'Şəxsi izləmə linki vasitəsilə təmir prosesini və nəticəni real vaxtda görün.',
     
+    // Stream / Civic Explorer
+    stream_badge: 'Canlı Şəhər Axını',
+    stream_title: 'Real Vaxt Problem İdarəetməsi və Nəticələr',
+    stream_subtitle: 'Şəhər orqanları tərəfindən birbaşa idarə olunan real müraciətlər və cari icra statusları.',
+    stream_search: 'Problemi və ya küçəni axtarın...',
+    tab_all: 'Hamısı',
+    tab_roads: 'Yollar',
+    tab_lighting: 'İşıqlandırma',
+    tab_waste: 'Tullantılar',
+    tab_water: 'Su Təsərrüfatı',
+    status_resolved: 'Həll edilib',
+    status_in_progress: 'İcrada',
+    status_pending: 'Gözləmədə',
+    view_details: 'Ətraflı Bax',
+
+    // Issues We Resolve
+    scope_badge: 'Şəhər Xidmətləri Sahələri',
     cat_title: 'Hansı Problemləri Həll Edirik',
     cat_subtitle: 'Yol infrastrukturundan tutmuş xidmət şəbəkələrinə qədər bütün şəhər problemləri nəzarətdədir.',
+    report_this_issue: 'Bu problem üzrə müraciət edin',
+
+    dept_transport: 'Nəqliyyat İdarəsi',
+    dept_lighting: 'İşıqlandırma Xidməti',
+    dept_sanitation: 'Təmizlik və Tullantı',
+    dept_utilities: 'Kommunal Xidmətlər',
+    dept_public_works: 'Şəhər Təsərrüfatı',
+    dept_parks: 'Yaşıllaşdırma və Parklar',
+
     cat_potholes: 'Yol və Asfalt Qüsurları',
+    cat_potholes_desc: 'Asfalt çatlar, dərin yol çuxurları, səki aşınmaları və bordür qüsurları.',
     cat_lighting: 'İşıqlandırma Problemləri',
+    cat_lighting_desc: 'Sıradan çıxmış küçə lampaları, sayrışan fənərlər, qaranlıq keçidlər və xətt qəzaları.',
     cat_trash: 'Tullantı və Zibil Yığınları',
+    cat_trash_desc: 'Dolan tullantı qutuları, qanunsuz zibil yığınları və təmizlənməyən sahələr.',
     cat_water: 'Su Sızıntıları və Kanalizasiya',
+    cat_water_desc: 'Yeraltı boru sızmaları, kanalizasiya daşmaları, gölməçələr və drenaj tıxanmaları.',
     cat_infra: 'Şəhər İnfrastrukturu',
+    cat_infra_desc: 'Qırılmış park skamyaları, zədəli qoruyucu çəpərlər, sıradan çıxmış dayanacaqlar və nişanlar.',
     cat_trees: 'Təhlükəli Ağaclar və Yaşıllıq',
+    cat_trees_desc: 'Təhlükəli sallanan budaqlar, yolu kəsən yıxılmış ağaclar və səkiləri dağıdan köklər.',
     submit_btn: 'Müraciəti Göndərin',
 
     // Metrics & Impact
@@ -42,6 +79,11 @@ export const dictionary: Record<Language, Record<string, string>> = {
     stats_precision: 'AI Dəqiqlik Əmsalı',
     stats_response: 'Orta Cavab Müddəti',
     stats_depts: 'Aktiv Şəhər İdarələri',
+
+    // CTA Banner
+    cta_badge: 'Vətəndaş Təşəbbüsü və İştirakı',
+    cta_title: 'Məhəllənizi Bir Foto İlə Dəyişin',
+    cta_subtitle: 'Şəhərimizi daha təmiz, təhlükəsiz və ağıllı edən minlərlə vətəndaşa qoşulun. AI təhlili və birbaşa bələdiyyə yönləndirməsi.',
 
     ai_section_badge: 'Ağıllı Süni İntellekt',
     ai_section_title: 'Şəkillərdən Avtomatik Problem Təyin Edilməsi',
@@ -73,6 +115,11 @@ export const dictionary: Record<Language, Record<string, string>> = {
     typed_4: 'empowering citizens for a cleaner neighborhood.',
     typed_5: 'real-time transparent municipal tracking.',
 
+    // Process section
+    process_badge: 'Simple Process',
+    process_title: '4 Steps to a Cleaner City',
+    process_subtitle: 'From photo capture to swift resolution',
+
     step1_title: 'Snap a Photo',
     step1_desc: 'Take a photo of any urban issue — potholes, broken streetlights, or illegal trash piles.',
     step2_title: 'AI Analysis',
@@ -82,14 +129,46 @@ export const dictionary: Record<Language, Record<string, string>> = {
     step4_title: 'Track Status',
     step4_desc: 'Monitor real-time repair progress and resolution proof with your unique tracking link.',
     
+    // Stream / Civic Explorer
+    stream_badge: 'Live Civic Stream',
+    stream_title: 'Real-Time Issue Pipeline & Resolutions',
+    stream_subtitle: 'Explore reported municipal challenges and live resolution status directly managed by city authorities.',
+    stream_search: 'Search issues or street...',
+    tab_all: 'All',
+    tab_roads: 'Roads',
+    tab_lighting: 'Lighting',
+    tab_waste: 'Waste',
+    tab_water: 'Water',
+    status_resolved: 'Resolved',
+    status_in_progress: 'In Progress',
+    status_pending: 'Pending',
+    view_details: 'View Details',
+
+    // Issues We Resolve
+    scope_badge: 'Civic Scope & Domains',
     cat_title: 'Issues We Resolve',
     cat_subtitle: 'From roads to municipal lighting — covering key urban challenges across the city.',
+    report_this_issue: 'Report this issue',
+
+    dept_transport: 'Transport Dept',
+    dept_lighting: 'Lighting Dept',
+    dept_sanitation: 'Sanitation Dept',
+    dept_utilities: 'Utilities Dept',
+    dept_public_works: 'Public Works',
+    dept_parks: 'Parks & Greenery',
+
     cat_potholes: 'Road Potholes & Asphalt',
+    cat_potholes_desc: 'Asphalt cracks, deep road craters, sidewalk degradation, and curb fractures.',
     cat_lighting: 'Public Lighting & Fixtures',
+    cat_lighting_desc: 'Malfunctioning streetlights, flickering fixtures, dark public alleys, and power line faults.',
     cat_trash: 'Waste & Litter Hotspots',
+    cat_trash_desc: 'Overflowing municipal dumpsters, illegal waste accumulation, and litter hotspots.',
     cat_water: 'Water Leaks & Drainage',
+    cat_water_desc: 'Underground pipeline bursts, sewer overflows, stagnant street puddles, and drainage blocks.',
     cat_infra: 'Urban Infrastructure',
+    cat_infra_desc: 'Damaged park benches, broken guardrails, vandalized bus stops, and bent traffic signage.',
     cat_trees: 'Hazardous Trees & Greenery',
+    cat_trees_desc: 'Overhanging hazardous branches, fallen trees blocking roads, and root sidewalk disruptions.',
     submit_btn: 'Submit Request',
 
     // Metrics & Impact
@@ -97,6 +176,11 @@ export const dictionary: Record<Language, Record<string, string>> = {
     stats_precision: 'AI Precision Score',
     stats_response: 'Avg Response Time',
     stats_depts: 'City Departments',
+
+    // CTA Banner
+    cta_badge: 'Citizen Empowerment Initiative',
+    cta_title: 'Transform Your Neighborhood With A Single Photo',
+    cta_subtitle: 'Join thousands of citizens making our city cleaner, safer, and smarter. Instant AI analysis and direct municipal dispatch.',
 
     ai_section_badge: 'Smart Artificial Intelligence',
     ai_section_title: 'Automated Image Classification & GPS Extraction',
@@ -128,6 +212,11 @@ export const dictionary: Record<Language, Record<string, string>> = {
     typed_4: 'инициатива граждан для чистоты и безопасности.',
     typed_5: 'прозрачное отслеживание статуса в реальном времени.',
 
+    // Process section
+    process_badge: 'Простой Процесс',
+    process_title: '4 Шага к Чистому Городу',
+    process_subtitle: 'От снимка до быстрого решения',
+
     step1_title: 'Сделайте Фото',
     step1_desc: 'Сфотографируйте городскую проблему — яму на дороге, неработающий фонарь или мусор.',
     step2_title: 'Анализ ИИ',
@@ -137,14 +226,46 @@ export const dictionary: Record<Language, Record<string, string>> = {
     step4_title: 'Отслеживание',
     step4_desc: 'Следите за ходом работ и результатом по персональной ссылке в реальном времени.',
     
+    // Stream / Civic Explorer
+    stream_badge: 'Прямой Городской Поток',
+    stream_title: 'Городской Поток Заявок и Решений в Реальном Времени',
+    stream_subtitle: 'Городские обращения и актуальный статус выполнения городскими службами.',
+    stream_search: 'Поиск по проблеме или улице...',
+    tab_all: 'Все',
+    tab_roads: 'Дороги',
+    tab_lighting: 'Освещение',
+    tab_waste: 'Мусор',
+    tab_water: 'Водоснабжение',
+    status_resolved: 'Решено',
+    status_in_progress: 'В процессе',
+    status_pending: 'В ожидании',
+    view_details: 'Подробнее',
+
+    // Issues We Resolve
+    scope_badge: 'Сферы Городских Служб',
     cat_title: 'Какие Проблемы Мы Решаем',
     cat_subtitle: 'От дорожного покрытия до городского освещения — охватываем ключевые вопросы города.',
+    report_this_issue: 'Сообщить об этой проблеме',
+
+    dept_transport: 'Департамент Транспорта',
+    dept_lighting: 'Служба Освещения',
+    dept_sanitation: 'Санитарная Служба',
+    dept_utilities: 'Коммунальные Службы',
+    dept_public_works: 'Благоустройство',
+    dept_parks: 'Озеленение и Парки',
+
     cat_potholes: 'Дорожные Ямы и Асфальт',
+    cat_potholes_desc: 'Трещины асфальта, глубокие ямы на дорогах, повреждения тротуаров и бордюров.',
     cat_lighting: 'Уличное Освещение',
+    cat_lighting_desc: 'Неработающие уличные фонари, мерцающие светильники, темные переулки и обрывы линий.',
     cat_trash: 'Свалки и Скопления Мусора',
+    cat_trash_desc: 'Переполненные контейнеры, несанкционированные свалки и скопления мусора.',
     cat_water: 'Утечки Воды и Канализация',
+    cat_water_desc: 'Прорывы трубопроводов, засоры канализации, застойные лужи и блокировки ливнёвок.',
     cat_infra: 'Городская Инфраструктура',
+    cat_infra_desc: 'Сломанные парковые скамейки, ограждения, остановки и поврежденные дорожные знаки.',
     cat_trees: 'Опасные Деревья и Насаждения',
+    cat_trees_desc: 'Опасные нависающие ветви, упавшие деревья на проезжей части и вздутые корни.',
     submit_btn: 'Отправить Обращение',
 
     // Metrics & Impact
@@ -152,6 +273,11 @@ export const dictionary: Record<Language, Record<string, string>> = {
     stats_precision: 'Точность ИИ',
     stats_response: 'Среднее Время Ответа',
     stats_depts: 'Городских Ведомств',
+
+    // CTA Banner
+    cta_badge: 'Инициатива Гражданского Участия',
+    cta_title: 'Преобразите Свой Район С Одного Фото',
+    cta_subtitle: 'Присоединяйтесь к тысячам граждан, делающих наш город чище и безопаснее. Мгновенный анализ ИИ и прямая отправка службам.',
 
     ai_section_badge: 'Умный Искусственный Интеллект',
     ai_section_title: 'Автоматическая классификация и извлечение GPS',

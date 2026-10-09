@@ -11,7 +11,7 @@ import {
   Camera, Bot, Send, Activity, ArrowRight, Zap, ShieldCheck,
   CheckCircle2, Clock, MapPin, Sparkles, Building2, ChevronDown, ChevronUp,
   Construction, Lightbulb, Trash2, Droplets, Wrench, Trees, AlertTriangle,
-  ArrowUpRight, PhoneCall, ShieldAlert, BadgeCheck, Play, Eye
+  ArrowUpRight, PhoneCall, ShieldAlert, BadgeCheck, TrendingUp
 } from 'lucide-react';
 
 export default function HomePage() {
@@ -49,45 +49,45 @@ export default function HomePage() {
   const categories = [
     {
       title: t('cat_potholes'),
-      desc: 'Asphalt cracks, deep road craters, sidewalk degradation, and curb fractures.',
+      desc: t('cat_potholes_desc'),
       icon: Construction,
       color: 'from-amber-500/20 to-orange-500/20 text-amber-600 dark:text-amber-500 border-amber-500/30',
-      badge: 'Transport Dept',
+      badge: t('dept_transport'),
     },
     {
       title: t('cat_lighting'),
-      desc: 'Malfunctioning streetlights, flickering fixtures, dark public alleys, and power line faults.',
+      desc: t('cat_lighting_desc'),
       icon: Lightbulb,
       color: 'from-yellow-500/20 to-amber-500/20 text-amber-600 dark:text-yellow-500 border-yellow-500/30',
-      badge: 'Lighting Dept',
+      badge: t('dept_lighting'),
     },
     {
       title: t('cat_trash'),
-      desc: 'Overflowing municipal dumpsters, illegal waste accumulation, and litter hotspots.',
+      desc: t('cat_trash_desc'),
       icon: Trash2,
       color: 'from-emerald-500/20 to-teal-500/20 text-emerald-600 dark:text-emerald-500 border-emerald-500/30',
-      badge: 'Sanitation Dept',
+      badge: t('dept_sanitation'),
     },
     {
       title: t('cat_water'),
-      desc: 'Underground pipeline bursts, sewer overflows, stagnant street puddles, and drainage blocks.',
+      desc: t('cat_water_desc'),
       icon: Droplets,
       color: 'from-cyan-500/20 to-blue-500/20 text-cyan-600 dark:text-cyan-400 border-cyan-500/30',
-      badge: 'Utilities Dept',
+      badge: t('dept_utilities'),
     },
     {
       title: t('cat_infra'),
-      desc: 'Damaged park benches, broken guardrails, vandalized bus stops, and bent traffic signage.',
+      desc: t('cat_infra_desc'),
       icon: Wrench,
       color: 'from-purple-500/20 to-indigo-500/20 text-purple-600 dark:text-purple-400 border-purple-500/30',
-      badge: 'Public Works',
+      badge: t('dept_public_works'),
     },
     {
       title: t('cat_trees'),
-      desc: 'Overhanging hazardous branches, fallen trees blocking roads, and root sidewalk disruptions.',
+      desc: t('cat_trees_desc'),
       icon: Trees,
       color: 'from-green-500/20 to-emerald-500/20 text-emerald-600 dark:text-emerald-400 border-green-500/30',
-      badge: 'Parks & Greenery',
+      badge: t('dept_parks'),
     },
   ];
 
@@ -163,49 +163,84 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Live Impact & Metrics Bar */}
+      {/* Live Impact & Metrics Bar with Neon Glow & Hover Effects */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-16 relative z-20">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-4 p-8 rounded-3xl bg-white/95 dark:bg-slate-900/90 backdrop-blur-xl border border-slate-200 dark:border-slate-800 shadow-xl dark:shadow-2xl text-center"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"
         >
-          <div className="space-y-1 p-2">
-            <div className="text-3xl sm:text-4xl font-black text-indigo-600 dark:text-indigo-400">1,240+</div>
-            <div className="text-xs sm:text-sm font-semibold text-slate-600 dark:text-slate-400">{t('stats_reports')}</div>
+          {/* Metric 1 */}
+          <div className="p-6 sm:p-7 rounded-3xl bg-white/95 dark:bg-slate-900/90 backdrop-blur-xl border border-slate-200 dark:border-slate-800 hover:border-indigo-500 dark:hover:border-indigo-500 shadow-lg hover:shadow-neon-indigo dark:hover:shadow-neon-indigo hover:-translate-y-1.5 hover:scale-105 transition-all duration-300 group cursor-default text-center">
+            <div className="w-12 h-12 mx-auto mb-3 rounded-2xl bg-indigo-50 dark:bg-indigo-500/10 flex items-center justify-center border border-indigo-100 dark:border-indigo-500/20 group-hover:scale-110 transition-transform">
+              <TrendingUp className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
+            </div>
+            <div className="text-3xl sm:text-4xl font-black text-indigo-600 dark:text-indigo-400 group-hover:scale-105 transition-transform">
+              1,240+
+            </div>
+            <div className="text-xs sm:text-sm font-bold text-slate-700 dark:text-slate-300 mt-1">
+              {t('stats_reports')}
+            </div>
           </div>
-          <div className="space-y-1 p-2 border-l border-slate-200 dark:border-slate-800">
-            <div className="text-3xl sm:text-4xl font-black text-purple-600 dark:text-purple-400">98.4%</div>
-            <div className="text-xs sm:text-sm font-semibold text-slate-600 dark:text-slate-400">{t('stats_precision')}</div>
+
+          {/* Metric 2 */}
+          <div className="p-6 sm:p-7 rounded-3xl bg-white/95 dark:bg-slate-900/90 backdrop-blur-xl border border-slate-200 dark:border-slate-800 hover:border-purple-500 dark:hover:border-purple-500 shadow-lg hover:shadow-neon-purple dark:hover:shadow-neon-purple hover:-translate-y-1.5 hover:scale-105 transition-all duration-300 group cursor-default text-center">
+            <div className="w-12 h-12 mx-auto mb-3 rounded-2xl bg-purple-50 dark:bg-purple-500/10 flex items-center justify-center border border-purple-100 dark:border-purple-500/20 group-hover:scale-110 transition-transform">
+              <Sparkles className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+            </div>
+            <div className="text-3xl sm:text-4xl font-black text-purple-600 dark:text-purple-400 group-hover:scale-105 transition-transform">
+              98.4%
+            </div>
+            <div className="text-xs sm:text-sm font-bold text-slate-700 dark:text-slate-300 mt-1">
+              {t('stats_precision')}
+            </div>
           </div>
-          <div className="space-y-1 p-2 border-l-0 md:border-l border-slate-200 dark:border-slate-800">
-            <div className="text-3xl sm:text-4xl font-black text-emerald-600 dark:text-emerald-400">&lt; 24h</div>
-            <div className="text-xs sm:text-sm font-semibold text-slate-600 dark:text-slate-400">{t('stats_response')}</div>
+
+          {/* Metric 3 */}
+          <div className="p-6 sm:p-7 rounded-3xl bg-white/95 dark:bg-slate-900/90 backdrop-blur-xl border border-slate-200 dark:border-slate-800 hover:border-emerald-500 dark:hover:border-emerald-500 shadow-lg hover:shadow-[0_0_25px_rgba(16,185,129,0.35)] hover:-translate-y-1.5 hover:scale-105 transition-all duration-300 group cursor-default text-center">
+            <div className="w-12 h-12 mx-auto mb-3 rounded-2xl bg-emerald-50 dark:bg-emerald-500/10 flex items-center justify-center border border-emerald-100 dark:border-emerald-500/20 group-hover:scale-110 transition-transform">
+              <Clock className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
+            </div>
+            <div className="text-3xl sm:text-4xl font-black text-emerald-600 dark:text-emerald-400 group-hover:scale-105 transition-transform">
+              &lt; 24h
+            </div>
+            <div className="text-xs sm:text-sm font-bold text-slate-700 dark:text-slate-300 mt-1">
+              {t('stats_response')}
+            </div>
           </div>
-          <div className="space-y-1 p-2 border-l border-slate-200 dark:border-slate-800">
-            <div className="text-3xl sm:text-4xl font-black text-cyan-600 dark:text-cyan-400">15+</div>
-            <div className="text-xs sm:text-sm font-semibold text-slate-600 dark:text-slate-400">{t('stats_depts')}</div>
+
+          {/* Metric 4 */}
+          <div className="p-6 sm:p-7 rounded-3xl bg-white/95 dark:bg-slate-900/90 backdrop-blur-xl border border-slate-200 dark:border-slate-800 hover:border-cyan-500 dark:hover:border-cyan-500 shadow-lg hover:shadow-[0_0_25px_rgba(6,182,212,0.35)] hover:-translate-y-1.5 hover:scale-105 transition-all duration-300 group cursor-default text-center">
+            <div className="w-12 h-12 mx-auto mb-3 rounded-2xl bg-cyan-50 dark:bg-cyan-500/10 flex items-center justify-center border border-cyan-100 dark:border-cyan-500/20 group-hover:scale-110 transition-transform">
+              <Building2 className="w-6 h-6 text-cyan-600 dark:text-cyan-400" />
+            </div>
+            <div className="text-3xl sm:text-4xl font-black text-cyan-600 dark:text-cyan-400 group-hover:scale-105 transition-transform">
+              15+
+            </div>
+            <div className="text-xs sm:text-sm font-bold text-slate-700 dark:text-slate-300 mt-1">
+              {t('stats_depts')}
+            </div>
           </div>
         </motion.div>
       </section>
 
-      {/* 4 Steps to a Cleaner City (High Contrast for Light & Dark Modes) */}
+      {/* 4 Steps to a Cleaner City (Multilingual & Neon Hover Cards) */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-2xl mx-auto mb-16">
           <span className="text-xs font-bold uppercase tracking-widest text-indigo-600 dark:text-indigo-400">
-            Simple Process
+            {t('process_badge')}
           </span>
           <h2 className="text-3xl font-black mt-2 sm:text-4xl text-slate-900 dark:text-white">
-            4 Steps to a Cleaner City
+            {t('process_title')}
           </h2>
           <p className="text-slate-600 dark:text-slate-400 mt-3 text-sm sm:text-base">
-            From photo capture to swift resolution
+            {t('process_subtitle')}
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {[
             { icon: Camera, title: t('step1_title'), desc: t('step1_desc'), num: '1' },
             { icon: Bot, title: t('step2_title'), desc: t('step2_desc'), num: '2' },
@@ -218,13 +253,14 @@ export default function HomePage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: idx * 0.1 }}
-              className="relative p-8 rounded-3xl bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 shadow-md dark:shadow-none hover:shadow-xl hover:border-indigo-500/50 dark:hover:border-indigo-500/50 transition-all duration-300 group flex flex-col justify-between"
+              whileHover={{ y: -8, scale: 1.03 }}
+              className="relative p-8 rounded-3xl bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 hover:border-indigo-500/70 dark:hover:border-indigo-500/70 shadow-md hover:shadow-neon-indigo dark:hover:shadow-neon-indigo transition-all duration-300 group flex flex-col justify-between cursor-pointer"
             >
-              <span className="absolute top-6 right-6 text-3xl font-black text-slate-300 dark:text-slate-700/80 group-hover:text-indigo-500/40 transition-colors select-none">
+              <span className="absolute top-6 right-6 text-3xl font-black text-slate-300 dark:text-slate-700/80 group-hover:text-indigo-500/50 group-hover:scale-110 transition-all select-none">
                 0{step.num}
               </span>
               <div>
-                <div className="w-14 h-14 rounded-2xl bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center mb-6 border border-indigo-100 dark:border-indigo-500/20 group-hover:scale-110 transition-transform">
+                <div className="w-14 h-14 rounded-2xl bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center mb-6 border border-indigo-100 dark:border-indigo-500/20 group-hover:scale-110 group-hover:shadow-neon-indigo transition-all">
                   <step.icon className="w-7 h-7" />
                 </div>
                 <h3 className="text-xl font-bold mb-2 text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
@@ -242,12 +278,12 @@ export default function HomePage() {
       {/* Live Civic Explorer Stream Component */}
       <CivicExplorer />
 
-      {/* Issues We Resolve Section */}
+      {/* Issues We Resolve Section (Multilingual & Neon Hover Cards) */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-2xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-50 dark:bg-purple-500/10 text-purple-700 dark:text-purple-400 border border-purple-200 dark:border-purple-500/20 text-xs font-bold mb-3">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-purple-50 dark:bg-purple-500/10 text-purple-700 dark:text-purple-400 border border-purple-200 dark:border-purple-500/20 text-xs font-bold mb-3 shadow-xs">
             <ShieldAlert className="w-3.5 h-3.5" />
-            <span>Civic Scope & Domains</span>
+            <span>{t('scope_badge')}</span>
           </div>
           <h2 className="text-3xl font-black sm:text-4xl text-slate-900 dark:text-white">{t('cat_title')}</h2>
           <p className="text-slate-600 dark:text-slate-400 mt-3 text-sm sm:text-base">{t('cat_subtitle')}</p>
@@ -261,12 +297,12 @@ export default function HomePage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: i * 0.08 }}
-              whileHover={{ y: -6, scale: 1.02 }}
-              className="p-7 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm dark:shadow-md hover:border-indigo-500/60 dark:hover:border-indigo-500/60 hover:shadow-xl dark:hover:shadow-neon-indigo cursor-pointer transition-all duration-300 group flex flex-col justify-between"
+              whileHover={{ y: -8, scale: 1.03 }}
+              className="p-7 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm dark:shadow-md hover:border-indigo-500/70 dark:hover:border-indigo-500/70 hover:shadow-neon-indigo dark:hover:shadow-neon-indigo cursor-pointer transition-all duration-300 group flex flex-col justify-between"
             >
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${cat.color} flex items-center justify-center border shadow-xs group-hover:scale-110 transition-transform duration-300`}>
+                  <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${cat.color} flex items-center justify-center border shadow-xs group-hover:scale-110 group-hover:shadow-neon-indigo transition-all duration-300`}>
                     <cat.icon className="w-7 h-7" />
                   </div>
                   <span className="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
@@ -285,7 +321,7 @@ export default function HomePage() {
               </div>
 
               <div className="pt-5 mt-5 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs font-bold text-indigo-600 dark:text-indigo-400">
-                <span>Report this issue</span>
+                <span>{t('report_this_issue')}</span>
                 <ArrowUpRight className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-0.5 transition-transform" />
               </div>
             </motion.div>
@@ -336,7 +372,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Citizen Empowerment Initiative Banner (SaaS Gradient High Contrast) */}
+      {/* Citizen Empowerment Initiative Banner (Multilingual & Neon Accents) */}
       <section ref={ctaRef} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
@@ -352,15 +388,15 @@ export default function HomePage() {
           <div className="relative z-10 max-w-3xl mx-auto text-center space-y-8">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/15 backdrop-blur-md border border-white/20 text-xs font-bold tracking-wide text-white">
               <BadgeCheck className="w-4 h-4 text-emerald-400" />
-              <span>Citizen Empowerment Initiative</span>
+              <span>{t('cta_badge')}</span>
             </div>
 
             <h2 className="text-3xl sm:text-5xl font-black tracking-tight leading-tight text-white">
-              Transform Your Neighborhood With <span className="text-cyan-300 drop-shadow-sm">A Single Photo</span>
+              {t('cta_title')}
             </h2>
 
             <p className="text-indigo-100 max-w-xl mx-auto text-base sm:text-lg font-normal leading-relaxed">
-              Join thousands of citizens making our city cleaner, safer, and smarter. Instant AI analysis and direct municipal dispatch.
+              {t('cta_subtitle')}
             </p>
 
             <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
