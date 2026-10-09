@@ -291,8 +291,8 @@ def test_email_view(request):
     if request.method == 'POST':
         to_email = request.POST.get('email', '').strip()
         if to_email:
-            subject = 'CityAssist — E-poçt Testi'
-            text_body = 'Bu CityAssist sisteminin test e-poçtudur. Əgər bunu görürsünüzsə, e-poçt xidməti düzgün işləyir!'
+            subject = 'ClearCity — E-poçt Testi'
+            text_body = 'Bu ClearCity sisteminin test e-poçtudur. Əgər bunu görürsünüzsə, e-poçt xidməti düzgün işləyir!'
             html_body = """
             <div style="font-family:Arial,sans-serif;max-width:480px;margin:30px auto;
                         background:#fff;border-radius:12px;overflow:hidden;
@@ -303,10 +303,10 @@ def test_email_view(request):
               </div>
               <div style="padding:30px;text-align:center;color:#555;">
                 <p style="font-size:16px;line-height:1.6;">
-                  CityAssist sisteminin e-poçt xidməti düzgün işləyir.<br>
+                  ClearCity sisteminin e-poçt xidməti düzgün işləyir.<br>
                   Bu test mesajını aldınızsa hər şey qaydasındadır!
                 </p>
-                <p style="color:#aaa;font-size:12px;margin-top:20px;">CityAssist Sistemi</p>
+                <p style="color:#aaa;font-size:12px;margin-top:20px;">ClearCity Sistemi</p>
               </div>
             </div>"""
             try:

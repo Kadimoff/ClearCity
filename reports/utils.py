@@ -474,7 +474,7 @@ def reverse_geocode_nominatim(lat, lon):
     """
     try:
         url = f"https://nominatim.openstreetmap.org/reverse?format=json&lat={lat}&lon={lon}&accept-language=az"
-        req = urllib.request.Request(url, headers={'User-Agent': 'CityAssist/1.0'})
+        req = urllib.request.Request(url, headers={'User-Agent': 'ClearCity/1.0'})
         with urllib.request.urlopen(req, timeout=4) as response:
             data = json.loads(response.read().decode('utf-8'))
             return data.get('display_name', '')

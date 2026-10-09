@@ -1,11 +1,11 @@
-# CityAssist - City Issue Reporting System
+# ClearCity - City Issue Reporting System
 
-A Django web application for citizens to report urban issues with photo upload, AI classification (mock), and department tracking.
+A Django web application for citizens to report urban issues with photo upload, AI classification (OpenAI / mock), and department tracking.
 
 ## Features
 
 - **Report Submission**: Upload photos, add address/description, auto GPS detection
-- **AI Classification**: Mock AI categorizes issues (road damage, trash overflow, etc.)
+- **AI Classification**: AI categorizes issues (road damage, trash overflow, etc.)
 - **Department Assignment**: Automatic routing to relevant city departments
 - **Status Tracking**: Citizens can track report status via unique link
 - **Department Portal**: Departments can update status and add comments
@@ -14,8 +14,8 @@ A Django web application for citizens to report urban issues with photo upload, 
 ## Project Structure
 
 ```
-cityassist/
-├── cityassist/          # Django project settings
+clearcity/
+├── clearcity/           # Django project settings
 ├── reports/             # Main application
 │   ├── models.py        # Department, Category, Report, StatusHistory, AIClassification
 │   ├── views.py         # Home, tracking, department views
