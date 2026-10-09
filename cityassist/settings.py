@@ -24,6 +24,9 @@ SECRET_KEY = os.getenv('SECRET_KEY', '')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env_bool('DEBUG', False)
+
+if not DEBUG and not SECRET_KEY:
+    raise RuntimeError('SECRET_KEY must be set when DEBUG is false')
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY', '').strip().strip('"').strip("'")
 
 ALLOWED_HOSTS = env_list('ALLOWED_HOSTS', ['*'])
@@ -94,7 +97,7 @@ else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
+            'NAME': os.getenv('SQLITE_PATH', BASE_DIR / 'db.sqlite3'),
         }
     }
 
@@ -155,6 +158,12 @@ EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '').strip().strip('"').st
 DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', EMAIL_HOST_USER).strip().strip('"').strip("'")
 
 SITE_URL = os.getenv('SITE_URL', 'http://localhost:8000').rstrip('/')
+
+# Behind a TLS-terminating proxy (Coolify/Traefik)
+if not DEBUG:
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
