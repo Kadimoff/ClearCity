@@ -1,4 +1,4 @@
-# CityAssist - City Issue Reporting System
+# ClearCity - City Issue Reporting System
 
 A Django web application for citizens to report urban issues with photo upload, AI classification (mock), and department tracking.
 
