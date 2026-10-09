@@ -61,9 +61,27 @@
                             <span style="font-weight: 500;">{{ report.created_at|date:"d.m.Y H:i" }}</span>
                         </div>
                         {% if report.latitude and report.longitude %}
-                        <div style="display: flex; justify-content: space-between; padding: var(--space-sm) 0;">
+                        <div style="display: flex; justify-content: space-between; padding: var(--space-sm) 0; border-bottom: 1px solid var(--color-border);">
                             <span style="color: var(--color-text-muted);">Koordinatlar</span>
                             <span style="font-weight: 500; font-family: monospace; font-size: var(--font-size-sm);">{{ report.latitude|floatformat:6 }}, {{ report.longitude|floatformat:6 }}</span>
+                        </div>
+                        {% endif %}
+                        {% if report.photo_source %}
+                        <div style="display: flex; justify-content: space-between; padding: var(--space-sm) 0; border-bottom: 1px solid var(--color-border);">
+                            <span style="color: var(--color-text-muted);">Foto Mənbəyi</span>
+                            <span style="font-weight: 500;">{{ report.get_photo_source_display }}</span>
+                        </div>
+                        {% endif %}
+                        {% if report.has_exif_location %}
+                        <div style="display: flex; justify-content: space-between; padding: var(--space-sm) 0; border-bottom: 1px solid var(--color-border);">
+                            <span style="color: var(--color-text-muted);">GPS Doğrulaması</span>
+                            <span style="color: #10b981; font-weight: 600;"><i class="fas fa-check-circle"></i> EXIF Metadatası ilə</span>
+                        </div>
+                        {% endif %}
+                        {% if report.camera_model %}
+                        <div style="display: flex; justify-content: space-between; padding: var(--space-sm) 0;">
+                            <span style="color: var(--color-text-muted);">Cihaz</span>
+                            <span style="font-weight: 500;">{{ report.camera_model }}</span>
                         </div>
                         {% endif %}
                     </div>
@@ -220,7 +238,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
     const map = L.map('map').setView([lat, lng], 15);
     
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+        maxZoom: 19,
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
     

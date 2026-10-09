@@ -4,12 +4,16 @@
  */
 
 document.addEventListener('DOMContentLoaded', function () {
-    // Initialize all modules
+    // Initialize global modules
     initNavbar();
     initScrollAnimations();
-    initDragDropUpload();
-    initFormValidation();
-    initGPSButton();
+
+    // Only run legacy form handlers if modern camera tab is not present
+    if (!document.getElementById('cameraTab')) {
+        initDragDropUpload();
+        initFormValidation();
+        initGPSButton();
+    }
 });
 
 /**

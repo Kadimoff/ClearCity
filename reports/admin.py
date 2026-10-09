@@ -34,9 +34,9 @@ class AIClassificationInline(admin.StackedInline):
 
 @admin.register(Report)
 class ReportAdmin(admin.ModelAdmin):
-    list_display = ['id', 'title', 'category', 'department', 'status', 'priority', 'address', 'created_at']
-    list_filter = ['status', 'category', 'priority', 'department', 'created_at']
-    search_fields = ['address', 'title', 'description', 'id']
+    list_display = ['id', 'title', 'category', 'department', 'status', 'priority', 'photo_source', 'has_exif_location', 'address', 'created_at']
+    list_filter = ['status', 'category', 'priority', 'department', 'photo_source', 'has_exif_location', 'created_at']
+    search_fields = ['address', 'title', 'description', 'id', 'camera_model']
     ordering = ['-created_at']
     readonly_fields = ['id', 'dept_token', 'citizen_token', 'created_at', 'updated_at']
     inlines = [StatusHistoryInline, AIClassificationInline]
@@ -47,8 +47,8 @@ class ReportAdmin(admin.ModelAdmin):
         ('Classification', {
             'fields': ('category', 'department', 'priority', 'status')
         }),
-        ('Location', {
-            'fields': ('latitude', 'longitude')
+        ('Location & Metadata', {
+            'fields': ('latitude', 'longitude', 'photo_source', 'has_exif_location', 'camera_model', 'metadata_info')
         }),
         ('Tokens', {
             'fields': ('dept_token', 'citizen_token'),
