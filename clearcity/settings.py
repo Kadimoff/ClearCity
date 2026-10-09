@@ -56,7 +56,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
 ]
 
-ROOT_URLCONF = 'cityassist.urls'
+ROOT_URLCONF = 'clearcity.urls'
 
 TEMPLATES = [
     {
@@ -74,7 +74,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'cityassist.wsgi.application'
+WSGI_APPLICATION = 'clearcity.wsgi.application'
 
 
 # Database
@@ -85,7 +85,7 @@ if os.getenv('USE_POSTGRES', 'false').lower() == 'true':
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.getenv('DB_NAME', 'cityassist'),
+            'NAME': os.getenv('DB_NAME', 'clearcity'),
             'USER': os.getenv('DB_USER', 'postgres'),
             'PASSWORD': os.getenv('DB_PASSWORD', 'postgres'),
             'HOST': os.getenv('DB_HOST', 'localhost'),

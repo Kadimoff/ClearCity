@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Müraciətin izlənməsi — CityAssist{% endblock %}
+{% block title %}Müraciətin izlənməsi — ClearCity{% endblock %}
 
 {% block content %}
 <section class="section" style="padding-top: 100px;">
@@ -57,6 +57,24 @@
                             <span style="color: var(--color-text-muted);">Ünvan</span>
                             <span style="font-weight: 500; text-align: right;">{{ report.address }}</span>
                         </div>
+                        {% if report.photo_source %}
+                        <div style="display: flex; justify-content: space-between; padding: var(--space-sm) 0; border-bottom: 1px solid var(--color-border);">
+                            <span style="color: var(--color-text-muted);">Foto Mənbəyi</span>
+                            <span style="font-weight: 500;">{{ report.get_photo_source_display }}</span>
+                        </div>
+                        {% endif %}
+                        {% if report.has_exif_location %}
+                        <div style="display: flex; justify-content: space-between; padding: var(--space-sm) 0; border-bottom: 1px solid var(--color-border);">
+                            <span style="color: var(--color-text-muted);">GPS Doğrulaması</span>
+                            <span style="color: #10b981; font-weight: 600;"><i class="fas fa-check-circle"></i> EXIF Metadatası ilə</span>
+                        </div>
+                        {% endif %}
+                        {% if report.camera_model %}
+                        <div style="display: flex; justify-content: space-between; padding: var(--space-sm) 0; border-bottom: 1px solid var(--color-border);">
+                            <span style="color: var(--color-text-muted);">Cihaz</span>
+                            <span style="font-weight: 500;">{{ report.camera_model }}</span>
+                        </div>
+                        {% endif %}
                         <div style="display: flex; justify-content: space-between; padding: var(--space-sm) 0;">
                             <span style="color: var(--color-text-muted);">Yaradılıb</span>
                             <span style="font-weight: 500;">{{ report.created_at|date:"d.m.Y H:i" }}</span>
@@ -190,8 +208,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     const map = L.map('map').setView([lat, lng], 15);
     
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        referrerPolicy: 'strict-origin-when-cross-origin',
+    L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);

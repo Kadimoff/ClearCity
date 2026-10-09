@@ -1,6 +1,6 @@
-// CityAssist Main JavaScript
+// ClearCity Main JavaScript
 
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize any global functionality here
-    console.log('CityAssist loaded');
+    console.log('ClearCity loaded');
 });

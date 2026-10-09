@@ -1,56 +1,143 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Problem haqqında bildirin — CityAssist{% endblock %}
+{% block title %}Problem haqqında bildirin — ClearCity{% endblock %}
+
+{% block extra_css %}
+<style>
+    .preview-container {
+        position: relative;
+        display: none;
+        margin-top: var(--space-md);
+    }
+    .preview-container.show {
+        display: block;
+    }
+    .preview-image {
+        width: 100%;
+        max-height: 280px;
+        object-fit: cover;
+        border-radius: var(--radius-md);
+        border: 2px solid var(--color-border);
+    }
+    .btn-change-photo {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        background: rgba(15, 23, 42, 0.8);
+        color: white;
+        border: none;
+        padding: 6px 14px;
+        border-radius: var(--radius-sm);
+        font-size: var(--font-size-xs);
+        font-weight: 600;
+        cursor: pointer;
+        backdrop-filter: blur(4px);
+        transition: all 0.2s ease;
+    }
+    .btn-change-photo:hover {
+        background: rgba(15, 23, 42, 0.95);
+        transform: scale(1.03);
+    }
+</style>
+{% endblock %}
 
 {% block content %}
 <section class="report-section">
     <div class="report-container">
         <div class="report-header">
             <h1>Problem haqqında bildirin</h1>
-            <p>Aşağıdakı formu doldurun və biz avtomatik olaraq müraciəti uyğun idarəyə yönləndirəcəyik</p>
+            <p>Fotonu çəkin və ya qalereyadan yükləyin — dəqiq lokasiya və ünvan avtomatik müəyyən olunacaq</p>
         </div>
 
         <form method="post" action="{% url 'submit_report' %}" enctype="multipart/form-data" class="report-form"
             id="reportForm">
             {% csrf_token %}
 
-            <!-- Photo Upload -->
+            <input type="hidden" name="photo_source" id="photoSource" value="camera">
+            <input type="hidden" id="latitude" name="latitude">
+            <input type="hidden" id="longitude" name="longitude">
+
+            <!-- Hidden File Inputs -->
+            <input type="file" id="cameraInput" accept="image/*" capture="environment" style="display:none;">
+            <input type="file" id="galleryInput" accept="image/*" style="display:none;">
+            <input type="file" id="photo" name="photo" style="display:none;" required>
+
+            <!-- Photo Mode Selector -->
             <div class="form-group">
                 <label class="form-label">
-                    Problemin fotosu <span>*</span>
+                    Foto mənbəyi və çəkiliş <span>*</span>
                 </label>
-                <div class="upload-area" id="uploadArea">
-                    <input type="file" id="photo" name="photo" class="upload-input" accept="image/*" required>
-                    <div class="upload-icon">
-                        <i class="fas fa-cloud-upload-alt"></i>
-                    </div>
-                    <p class="upload-text">Fotonu bura sürükləyin və ya seçmək üçün klikləyin</p>
-                    <p class="upload-hint">Dəstəklənən formatlar: JPG, PNG, WEBP (maks. 10MB)</p>
-                    <img id="uploadPreview" class="upload-preview" alt="Önizləmə">
+                
+                <div class="photo-source-selector">
+                    <button type="button" class="source-tab-btn active" id="cameraTab" data-source="camera">
+                        <div class="source-icon-wrap">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                        <div class="source-text-wrap">
+                            <span class="source-title">Şəkil çək</span>
+                            <span class="source-subtitle">Kamera ilə dərhal çəkin (dəqiq GPS)</span>
+                        </div>
+                    </button>
+
+                    <button type="button" class="source-tab-btn" id="galleryTab" data-source="gallery">
+                        <div class="source-icon-wrap">
+                            <i class="fas fa-images"></i>
+                        </div>
+                        <div class="source-text-wrap">
+                            <span class="source-title">Şəkil yüklə</span>
+                            <span class="source-subtitle">Qalereyadan seçin (GPS metadatası)</span>
+                        </div>
+                    </button>
                 </div>
+
+                <!-- Main Dropzone / Action Area -->
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-icon" id="uploadIcon">
+                        <i class="fas fa-camera"></i>
+                    </div>
+                    <p class="upload-text" id="uploadText">Kameranı açmaq və foto çəkmək üçün klikləyin</p>
+                    <p class="upload-hint" id="uploadHint">Çəkiliş anında dəqiq GPS koordinatları qeyd ediləcək</p>
+                </div>
+
+                <!-- Preview Box -->
+                <div class="preview-container" id="previewContainer">
+                    <img id="uploadPreview" class="preview-image" alt="Önizləmə">
+                    <button type="button" class="btn-change-photo" id="changePhotoBtn">
+                        <i class="fas fa-redo"></i> Fotonu dəyişdir
+                    </button>
+                </div>
+
+                <!-- Metadata & Location Status Box -->
+                <div class="metadata-card" id="metadataCard"></div>
+
+                <!-- AI Status Indicator -->
                 <p class="ai-status" id="aiStatus" style="margin-top: 0.75rem; color: #57606a; font-size: 0.95rem;"></p>
             </div>
 
-            <!-- Address -->
+            <!-- Address and Interactive Map -->
             <div class="form-group">
                 <label for="address" class="form-label">
-                    Ünvan <span>*</span>
+                    Problemin ünvanı və dəqiq məkanı <span>*</span>
                 </label>
-                <input type="text" id="address" name="address" class="form-input"
-                    placeholder="Məsələn: Nizami küçəsi, 45, Yasamal rayonu" required>
-
-                <!-- GPS Button -->
-                <div style="margin-top: var(--space-sm);">
-                    <button type="button" class="gps-button" id="gpsBtn">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <span>Məkanımı müəyyən et</span>
+                <div style="display: flex; gap: var(--space-sm);">
+                    <input type="text" id="address" name="address" class="form-input"
+                        placeholder="Məsələn: Nizami küçəsi, 45, Yasamal rayonu" required>
+                    <button type="button" class="gps-button" id="gpsBtn" title="Cihazın cari məkanını götür" style="white-space: nowrap;">
+                        <i class="fas fa-location-arrow"></i>
+                        <span>Cari Məkan</span>
                     </button>
-                    <p class="gps-status" id="gpsStatus"></p>
                 </div>
+                <p class="gps-status" id="gpsStatus"></p>
 
-                <input type="hidden" id="latitude" name="latitude">
-                <input type="hidden" id="longitude" name="longitude">
+                <!-- Interactive Leaflet Map -->
+                <div class="map-picker-box">
+                    <div class="map-picker-header">
+                        <span><i class="fas fa-map-marked-alt"></i> Dəqiq Məkan Xəritəsi</span>
+                        <small style="color: var(--color-text-muted);">Xəritəyə toxunaraq nöqtəni dəqiqləşdirə bilərsiniz</small>
+                    </div>
+                    <div id="interactiveMap" style="height: 250px; width: 100%;"></div>
+                </div>
             </div>
 
             <!-- Description -->
@@ -89,6 +176,7 @@
 {% endblock %}
 
 {% block extra_js %}
+<script src="{% static 'js/exif.min.js' %}"></script>
 <script>
     function getCookie(name) {
         let cookieValue = null;
@@ -106,45 +194,502 @@
     }
 
     document.addEventListener('DOMContentLoaded', function () {
-        const photoInput = document.getElementById('photo');
+        // Elements
+        const cameraTab = document.getElementById('cameraTab');
+        const galleryTab = document.getElementById('galleryTab');
+        const photoSourceInput = document.getElementById('photoSource');
+        const cameraInput = document.getElementById('cameraInput');
+        const galleryInput = document.getElementById('galleryInput');
+        const mainPhotoInput = document.getElementById('photo');
+        const uploadArea = document.getElementById('uploadArea');
+        const uploadIcon = document.getElementById('uploadIcon');
+        const uploadText = document.getElementById('uploadText');
+        const uploadHint = document.getElementById('uploadHint');
+        const previewContainer = document.getElementById('previewContainer');
+        const uploadPreview = document.getElementById('uploadPreview');
+        const changePhotoBtn = document.getElementById('changePhotoBtn');
+        const metadataCard = document.getElementById('metadataCard');
+        const addressInput = document.getElementById('address');
+        const latitudeInput = document.getElementById('latitude');
+        const longitudeInput = document.getElementById('longitude');
+        const gpsBtn = document.getElementById('gpsBtn');
+        const gpsStatus = document.getElementById('gpsStatus');
         const descriptionInput = document.getElementById('description');
         const aiStatus = document.getElementById('aiStatus');
+        const submitBtn = document.getElementById('submitBtn');
+        const reportForm = document.getElementById('reportForm');
         const csrftoken = getCookie('csrftoken');
 
-        photoInput.addEventListener('change', async function () {
-            aiStatus.textContent = 'AI fotoşəkli analiz edir...';
-            const file = photoInput.files[0];
-            if (!file) {
-                aiStatus.textContent = '';
+        let currentMode = 'camera'; // 'camera' or 'gallery'
+        let cachedCameraGPS = null;
+        let isFetchingGPS = false;
+
+        // Initialize Leaflet Map
+        const defaultLat = 40.4093;
+        const defaultLng = 49.8671;
+        const map = L.map('interactiveMap').setView([defaultLat, defaultLng], 12);
+        L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        let mapMarker = null;
+
+        function updateMarkerPosition(lat, lng, doReverseGeocode = true) {
+            lat = parseFloat(lat);
+            lng = parseFloat(lng);
+            if (isNaN(lat) || isNaN(lng)) return;
+
+            latitudeInput.value = lat;
+            longitudeInput.value = lng;
+
+            if (!mapMarker) {
+                mapMarker = L.marker([lat, lng], { draggable: true }).addTo(map);
+                mapMarker.on('dragend', function (e) {
+                    const pos = e.target.getLatLng();
+                    latitudeInput.value = pos.lat.toFixed(7);
+                    longitudeInput.value = pos.lng.toFixed(7);
+                    fetchAddressFromCoords(pos.lat, pos.lng);
+                    showMetadataMessage('info', '📍 Məkan xəritədə dəqiqləşdirildi', `Koordinatlar: ${pos.lat.toFixed(5)}, ${pos.lng.toFixed(5)}`);
+                });
+            } else {
+                mapMarker.setLatLng([lat, lng]);
+            }
+
+            map.setView([lat, lng], 16);
+            if (doReverseGeocode) {
+                fetchAddressFromCoords(lat, lng);
+            }
+        }
+
+        // Click map to select location
+        map.on('click', function (e) {
+            updateMarkerPosition(e.latlng.lat, e.latlng.lng, true);
+            showMetadataMessage('info', '📍 Məkan xəritədən seçildi', `Koordinatlar: ${e.latlng.lat.toFixed(5)}, ${e.latlng.lng.toFixed(5)}`);
+        });
+
+        // Tab Switching
+        cameraTab.addEventListener('click', () => setMode('camera'));
+        galleryTab.addEventListener('click', () => setMode('gallery'));
+
+        function setMode(mode) {
+            currentMode = mode;
+            photoSourceInput.value = mode;
+
+            if (mode === 'camera') {
+                cameraTab.classList.add('active');
+                galleryTab.classList.remove('active');
+                uploadIcon.innerHTML = '<i class="fas fa-camera"></i>';
+                uploadText.textContent = 'Kameranı açmaq və foto çəkmək üçün klikləyin';
+                uploadHint.textContent = 'Çəkiliş anında dəqiq GPS koordinatları qeyd ediləcək';
+                preFetchCameraLocation();
+            } else {
+                galleryTab.classList.add('active');
+                cameraTab.classList.remove('active');
+                uploadIcon.innerHTML = '<i class="fas fa-images"></i>';
+                uploadText.textContent = 'Qalereyadan və ya fayllardan seçmək üçün klikləyin';
+                uploadHint.textContent = 'Şəkildəki GPS meta-məlumatı avtomatik oxunacaq';
+            }
+        }
+
+        // Trigger correct input on uploadArea click
+        uploadArea.addEventListener('click', function () {
+            if (currentMode === 'camera') {
+                preFetchCameraLocation();
+                cameraInput.click();
+            } else {
+                galleryInput.click();
+            }
+        });
+
+        // Change Photo Button
+        changePhotoBtn.addEventListener('click', function () {
+            previewContainer.classList.remove('show');
+            uploadArea.style.display = 'block';
+            metadataCard.className = 'metadata-card';
+            metadataCard.innerHTML = '';
+            aiStatus.textContent = '';
+            if (currentMode === 'camera') {
+                cameraInput.click();
+            } else {
+                galleryInput.click();
+            }
+        });
+
+        // Pre-fetch high accuracy GPS when in camera mode
+        function preFetchCameraLocation() {
+            if (!navigator.geolocation || isFetchingGPS) return;
+            isFetchingGPS = true;
+            navigator.geolocation.getCurrentPosition(
+                pos => {
+                    cachedCameraGPS = {
+                        lat: pos.coords.latitude,
+                        lng: pos.coords.longitude,
+                        accuracy: pos.coords.accuracy,
+                        time: new Date()
+                    };
+                    isFetchingGPS = false;
+                },
+                err => {
+                    isFetchingGPS = false;
+                },
+                { enableHighAccuracy: true, timeout: 8000, maximumAge: 0 }
+            );
+        }
+
+        // Drag and drop for uploadArea
+        ['dragenter', 'dragover'].forEach(name => {
+            uploadArea.addEventListener(name, e => {
+                e.preventDefault();
+                uploadArea.classList.add('dragover');
+            });
+        });
+        ['dragleave', 'drop'].forEach(name => {
+            uploadArea.addEventListener(name, e => {
+                e.preventDefault();
+                uploadArea.classList.remove('dragover');
+            });
+        });
+        uploadArea.addEventListener('drop', e => {
+            const files = e.dataTransfer.files;
+            if (files && files.length > 0) {
+                setMode('gallery');
+                handleSelectedFile(files[0]);
+            }
+        });
+
+        // Handle file inputs
+        cameraInput.addEventListener('change', function () {
+            if (this.files && this.files[0]) {
+                handleSelectedFile(this.files[0]);
+            }
+        });
+
+        galleryInput.addEventListener('change', function () {
+            if (this.files && this.files[0]) {
+                handleSelectedFile(this.files[0]);
+            }
+        });
+
+        // Main handler when file is chosen
+        function handleSelectedFile(file) {
+            if (!file.type.startsWith('image/')) {
+                alert('Zəhmət olmasa, şəkil faylı seçin!');
                 return;
             }
 
-            const data = new FormData();
-            data.append('photo', file);
+            // Bind file to main form input
+            const dt = new DataTransfer();
+            dt.items.add(file);
+            mainPhotoInput.files = dt.files;
+
+            // Show preview
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                uploadPreview.src = e.target.result;
+                uploadArea.style.display = 'none';
+                previewContainer.classList.add('show');
+            };
+            reader.readAsDataURL(file);
+
+            // Show loading metadata
+            showMetadataMessage('info', '🔍 Analiz edilir...', 'Şəklin GPS meta-məlumatları və koordinatları oxunur...');
+
+            // Parse EXIF metadata
+            parseImageMetadata(file);
+
+            // Run AI classification in background
+            runAIClassification(file);
+        }
+
+        // Parse EXIF Metadata using exif-js + Backend API fallback
+        function parseImageMetadata(file) {
+            let handled = false;
+
+            if (typeof EXIF !== 'undefined') {
+                EXIF.getData(file, function () {
+                    const latDMS = EXIF.getTag(this, "GPSLatitude");
+                    const lonDMS = EXIF.getTag(this, "GPSLongitude");
+                    const latRef = EXIF.getTag(this, "GPSLatitudeRef") || "N";
+                    const lonRef = EXIF.getTag(this, "GPSLongitudeRef") || "E";
+                    const make = EXIF.getTag(this, "Make") || "";
+                    const model = EXIF.getTag(this, "Model") || "";
+                    const camera = `${make} ${model}`.trim();
+                    const dateTaken = EXIF.getTag(this, "DateTimeOriginal") || EXIF.getTag(this, "DateTime") || "";
+
+                    const lat = convertDMSToDD(latDMS, latRef);
+                    const lon = convertDMSToDD(lonDMS, lonRef);
+
+                    if (lat !== null && lon !== null) {
+                        handled = true;
+                        onMetadataSuccess(lat, lon, camera, dateTaken, 'exif');
+                    }
+                });
+            }
+
+            // Always verify with backend API for 100% precision or if client EXIF didn't find GPS
+            setTimeout(() => {
+                if (!handled) {
+                    verifyMetadataWithBackend(file);
+                }
+            }, 300);
+        }
+
+        async function verifyMetadataWithBackend(file) {
+            const formData = new FormData();
+            formData.append('photo', file);
 
             try {
-                const response = await fetch("{% url 'api_classify_photo' %}", {
+                const res = await fetch("{% url 'api_extract_metadata' %}", {
                     method: 'POST',
-                    headers: {
-                        'X-CSRFToken': csrftoken,
-                    },
-                    body: data,
+                    headers: { 'X-CSRFToken': csrftoken },
+                    body: formData
                 });
+                const data = await res.json();
 
-                const result = await response.json();
-                if (!response.ok) {
-                    throw new Error(result.error || 'AI classification failed');
+                if (data.has_gps && data.latitude && data.longitude) {
+                    onMetadataSuccess(data.latitude, data.longitude, data.camera_model, data.date_taken, 'exif', data.address);
+                } else {
+                    // Check if camera mode has device GPS fallback
+                    if (currentMode === 'camera' && cachedCameraGPS) {
+                        onMetadataSuccess(cachedCameraGPS.lat, cachedCameraGPS.lng, 'Cihaz kamerası', new Date().toLocaleTimeString(), 'camera_gps');
+                    } else if (currentMode === 'camera') {
+                        // Request device GPS now
+                        fetchLiveLocationForCamera();
+                    } else {
+                        // Gallery photo without GPS metadata: Warn user
+                        onMetadataMissing();
+                    }
                 }
-
-                if (!descriptionInput.value.trim()) {
-                    descriptionInput.value = result.description || '';
+            } catch (err) {
+                if (currentMode === 'camera') {
+                    fetchLiveLocationForCamera();
+                } else {
+                    onMetadataMissing();
                 }
-                aiStatus.textContent = `AI təklifi: ${result.description || 'Məlumat tapılmadı'}`;
-            } catch (error) {
-                aiStatus.textContent = 'AI analiz xətası: ' + error.message;
-                console.error(error);
             }
+        }
+
+        function onMetadataSuccess(lat, lon, camera, dateTaken, source, geocodedAddress) {
+            updateMarkerPosition(lat, lon, !geocodedAddress);
+            if (geocodedAddress && addressInput) {
+                addressInput.value = geocodedAddress;
+            }
+
+            let badgeTitle = source === 'exif' 
+                ? '✅ Dəqiq Məkan Təyin Edildi (Şəklin GPS Metadatası)'
+                : '✅ Kamera ilə Çəkildi & Canlı GPS Məkanı Təsdiqləndi';
+
+            let detailsHtml = `
+                <div class="metadata-details">
+                    <div class="metadata-item"><strong>Enlik:</strong> ${parseFloat(lat).toFixed(6)}</div>
+                    <div class="metadata-item"><strong>Uzunluq:</strong> ${parseFloat(lon).toFixed(6)}</div>
+                    ${camera ? `<div class="metadata-item"><i class="fas fa-camera"></i> ${camera}</div>` : ''}
+                    ${dateTaken ? `<div class="metadata-item"><i class="fas fa-clock"></i> ${dateTaken}</div>` : ''}
+                </div>
+            `;
+
+            showMetadataMessage('success', badgeTitle, detailsHtml);
+        }
+
+        function onMetadataMissing() {
+            latitudeInput.value = '';
+            longitudeInput.value = '';
+
+            let warningHtml = `
+                <p style="margin: 4px 0 8px 0; color: #78350f;">
+                    Fotonun daxilində GPS koordinatları aşkar edilmədi. 
+                </p>
+                <div style="font-size: 0.8rem; color: #92400e; margin-bottom: 10px; background: rgba(254, 243, 199, 0.6); padding: 8px 12px; border-radius: 6px;">
+                    <strong>Olası səbəblər:</strong>
+                    <ul style="margin: 4px 0 0 16px; padding: 0;">
+                        <li>Telefonun Kamera tənzimləməsində <em>"Məkan teqləri" (Save location)</em> sönülüdür.</li>
+                        <li>Şəkil WhatsApp, Telegram və ya skrinşot vasitəsilə əldə edilib (meta-məlumat silinir).</li>
+                        <li>Brauzerdə məkan icazəsi verilməyib və ya kompüter veb-kamerasından çəkilib.</li>
+                    </ul>
+                </div>
+                <div class="metadata-actions">
+                    <button type="button" class="btn-meta-action btn-primary-action" id="btnUseCurrent">
+                        <i class="fas fa-location-arrow"></i> Cari Məkanımı Təyin Et (GPS)
+                    </button>
+                    <button type="button" class="btn-meta-action btn-secondary-action" id="btnUseMap">
+                        <i class="fas fa-map-marker-alt"></i> Xəritədən İşarələ
+                    </button>
+                    <button type="button" class="btn-meta-action btn-secondary-action" id="btnUseCam">
+                        <i class="fas fa-camera"></i> Yenidən Çək
+                    </button>
+                </div>
+            `;
+
+            showMetadataMessage('warning', '⚠️ Şəkildə GPS Meta-məlumatı tapılmadı!', warningHtml);
+
+            // Bind action buttons
+            const btnUseCurrent = document.getElementById('btnUseCurrent');
+            const btnUseMap = document.getElementById('btnUseMap');
+            const btnUseCam = document.getElementById('btnUseCam');
+
+            if (btnUseCurrent) {
+                btnUseCurrent.addEventListener('click', triggerGPSGeolocation);
+            }
+            if (btnUseMap) {
+                btnUseMap.addEventListener('click', () => {
+                    document.getElementById('interactiveMap').scrollIntoView({ behavior: 'smooth' });
+                });
+            }
+            if (btnUseCam) {
+                btnUseCam.addEventListener('click', () => {
+                    setMode('camera');
+                    changePhotoBtn.click();
+                });
+            }
+        }
+
+        function fetchLiveLocationForCamera() {
+            showMetadataMessage('info', '📍 Məkan təyin edilir...', 'Kamera üçün dəqiq GPS koordinatları əldə edilir...');
+            if (!navigator.geolocation) {
+                onMetadataMissing();
+                return;
+            }
+            navigator.geolocation.getCurrentPosition(
+                pos => {
+                    onMetadataSuccess(pos.coords.latitude, pos.coords.longitude, 'Mobil Kamera', new Date().toLocaleTimeString(), 'camera_gps');
+                },
+                err => {
+                    onMetadataMissing();
+                },
+                { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+            );
+        }
+
+        function showMetadataMessage(type, title, content) {
+            metadataCard.className = `metadata-card show ${type}`;
+            metadataCard.innerHTML = `
+                <div class="metadata-header">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'warning' ? 'exclamation-triangle' : 'info-circle'}"></i>
+                    ${title}
+                </div>
+                <div>${content}</div>
+            `;
+        }
+
+        // DMS to DD converter
+        function convertDMSToDD(dms, ref) {
+            if (!dms) return null;
+            function val(v) {
+                if (typeof v === 'number') return v;
+                if (v && typeof v.numerator !== 'undefined' && typeof v.denominator !== 'undefined') {
+                    return v.denominator !== 0 ? v.numerator / v.denominator : 0;
+                }
+                return parseFloat(v) || 0;
+            }
+            const d = val(dms[0]);
+            const m = val(dms[1]);
+            const s = val(dms[2]);
+            let dd = d + (m / 60) + (s / 3600);
+            if (ref === "S" || ref === "W") {
+                dd = -dd;
+            }
+            return isNaN(dd) ? null : dd;
+        }
+
+        // Reverse geocoding via Nominatim
+        async function fetchAddressFromCoords(lat, lon) {
+            gpsStatus.textContent = 'Ünvan dəqiqləşdirilir...';
+            try {
+                const response = await fetch(
+                    `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&accept-language=az`,
+                    { headers: { 'User-Agent': 'ClearCity/1.0' } }
+                );
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data && data.display_name && addressInput) {
+                        addressInput.value = data.display_name;
+                        gpsStatus.textContent = `📍 Koordinatlar: ${lat.toFixed(5)}, ${lon.toFixed(5)}`;
+                    }
+                }
+            } catch (e) {
+                gpsStatus.textContent = `📍 Koordinatlar: ${lat.toFixed(5)}, ${lon.toFixed(5)}`;
+            }
+        }
+
+        // GPS Button click
+        gpsBtn.addEventListener('click', triggerGPSGeolocation);
+
+        function triggerGPSGeolocation() {
+            if (!navigator.geolocation) {
+                alert('Geolokasiya brauzeriniz tərəfindən dəstəklənmir');
+                return;
+            }
+            gpsBtn.classList.add('loading');
+            gpsStatus.textContent = 'Məkan müəyyən edilir...';
+
+            navigator.geolocation.getCurrentPosition(
+                pos => {
+                    gpsBtn.classList.remove('loading');
+                    const lat = pos.coords.latitude;
+                    const lon = pos.coords.longitude;
+                    updateMarkerPosition(lat, lon, true);
+                    showMetadataMessage('success', '📍 Cari Məkan Uğurla Təyin Edildi', `Koordinatlar: ${lat.toFixed(5)}, ${lon.toFixed(5)}`);
+                },
+                err => {
+                    gpsBtn.classList.remove('loading');
+                    gpsStatus.textContent = 'Geolokasiyaya icazə verilmədi və ya xəta baş verdi.';
+                },
+                { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+            );
+        }
+
+        // AI classification in background
+        async function runAIClassification(file) {
+            aiStatus.textContent = '🤖 AI fotoşəkli təhlil edir...';
+            const formData = new FormData();
+            formData.append('photo', file);
+
+            try {
+                const res = await fetch("{% url 'api_classify_photo' %}", {
+                    method: 'POST',
+                    headers: { 'X-CSRFToken': csrftoken },
+                    body: formData
+                });
+                const result = await res.json();
+                if (res.ok) {
+                    if (!descriptionInput.value.trim() && result.description) {
+                        descriptionInput.value = result.description;
+                    }
+                    aiStatus.innerHTML = `<i class="fas fa-magic"></i> AI təklifi: <strong>${result.description || 'Məlumat tapıldı'}</strong>`;
+                } else {
+                    aiStatus.textContent = '';
+                }
+            } catch (e) {
+                aiStatus.textContent = '';
+            }
+        }
+
+        // Form Submit Validation
+        reportForm.addEventListener('submit', function (e) {
+            if (!mainPhotoInput.files || !mainPhotoInput.files[0]) {
+                e.preventDefault();
+                alert('Zəhmət olmasa, problemin fotosunu çəkin və ya yükləyin!');
+                uploadArea.scrollIntoView({ behavior: 'smooth' });
+                return;
+            }
+
+            const lat = latitudeInput.value.trim();
+            const lng = longitudeInput.value.trim();
+
+            if (!lat || !lng) {
+                e.preventDefault();
+                alert('Dəqiq lokasiya müəyyən edilməyib!\n\nZəhmət olmasa, şəklin GPS metadatasının olduğundan əmin olun və ya "Cari Məkan" / Xəritədən yeri seçin.');
+                metadataCard.scrollIntoView({ behavior: 'smooth' });
+                return;
+            }
+
+            submitBtn.classList.add('loading');
+            submitBtn.disabled = true;
         });
+
+        // Initialize camera location pre-fetch
+        preFetchCameraLocation();
     });
 </script>
 {% endblock %}

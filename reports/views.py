@@ -15,6 +15,8 @@ from .utils import (
     send_citizen_status_email,
     get_or_create_category_from_classification,
     get_priority_from_classification,
+    extract_exif_gps_and_metadata,
+    reverse_geocode_nominatim,
 )
 
 
@@ -35,70 +37,99 @@ def report(request):
 @require_http_methods(["POST"])
 def submit_report(request):
     """
-    Handle report submission from the home page form.
+    Handle report submission from the report form with metadata and GPS validation.
     """
-    # Get form data
     photo = request.FILES.get('photo')
     address = request.POST.get('address', '').strip()
     description = request.POST.get('description', '').strip()
     citizen_email = request.POST.get('citizen_email', '').strip()
-    latitude = request.POST.get('latitude')
-    longitude = request.POST.get('longitude')
+    photo_source = request.POST.get('photo_source', 'gallery').strip()
+    latitude_str = request.POST.get('latitude', '').strip()
+    longitude_str = request.POST.get('longitude', '').strip()
 
     # Validation
     if not photo:
-        messages.error(request, 'Please upload a photo.')
-        return redirect('home')
+        messages.error(request, 'Zəhmət olmasa, problemin fotosunu çəkin və ya yükləyin.')
+        return redirect('report')
+
+    # Extract EXIF metadata from photo
+    meta = extract_exif_gps_and_metadata(photo)
+    has_exif = meta.get('has_gps', False)
+
+    latitude = None
+    longitude = None
+
+    if has_exif:
+        latitude = meta.get('latitude')
+        longitude = meta.get('longitude')
+    elif latitude_str and longitude_str:
+        try:
+            latitude = float(latitude_str)
+            longitude = float(longitude_str)
+        except (ValueError, TypeError):
+            latitude = None
+            longitude = None
+
+    # Strict location check
+    if latitude is None or longitude is None:
+        messages.error(
+            request,
+            'Problemin dəqiq lokasiyası müəyyən edilmədi! '
+            'Zəhmət olmasa, fotonun GPS meta-məlumatının olduğundan əmin olun '
+            'və ya "Məkanımı müəyyən et" düyməsi / xəritə vasitəsilə dəqiq məkanı seçin.'
+        )
+        return redirect('report')
+
+    # Reverse geocode address if missing
+    if not address and latitude and longitude:
+        address = reverse_geocode_nominatim(latitude, longitude)
 
     if not address:
-        messages.error(request, 'Please provide an address.')
-        return redirect('home')
+        messages.error(request, 'Zəhmət olmasa, ünvanı qeyd edin.')
+        return redirect('report')
 
     if not description:
-        messages.error(request, 'Please provide a description.')
-        return redirect('home')
-    
+        messages.error(request, 'Zəhmət olmasa, problemin təsvirini qeyd edin.')
+        return redirect('report')
+
     # Create the report
     report = Report(
         photo=photo,
         address=address,
         description=description,
         citizen_email=citizen_email,
+        latitude=latitude,
+        longitude=longitude,
+        photo_source=photo_source,
+        has_exif_location=has_exif,
+        camera_model=meta.get('camera_model') or '',
+        metadata_info=meta.get('raw_metadata') or {},
     )
-    
-    # Set GPS coordinates if provided
-    if latitude and longitude:
-        try:
-            report.latitude = float(latitude)
-            report.longitude = float(longitude)
-        except ValueError:
-            pass
-    
+
     # Generate title from description (first 50 chars)
     report.title = description[:50] + ('...' if len(description) > 50 else '')
-    
     report.save()
-    
+
     # AI image classification
     classification_result = real_classify_image(report.photo.path if report.photo else None)
     classification_result = normalize_classification_result(classification_result)
-    
+
     # Get or create category based on classification
     category = get_or_create_category_from_classification(classification_result)
     report.category = category
-    
+
     # Set priority from classification
     report.priority = get_priority_from_classification(classification_result)
-    
+
     # Assign department from category
     if category and category.department:
         report.department = category.department
     else:
         # Fallback to first active department
         report.department = Department.objects.filter(is_active=True).first()
-    
+
     report.save()
-    
+
     # Save AI classification result
     ai_classification = AIClassification.objects.create(
         report=report,
@@ -106,7 +137,7 @@ def submit_report(request):
         confidence=classification_result["confidence"],
         raw_response=classification_result
     )
-    
+
     # Create initial status history
     StatusHistory.objects.create(
         report=report,
@@ -115,10 +146,10 @@ def submit_report(request):
         changed_by='system',
         comment='Report created and classified by AI'
     )
-    
+
     # Send email notification
     send_email(report)
-    
+
     # Redirect to tracking page
     return redirect('track_report', citizen_token=report.citizen_token)
 
@@ -127,7 +158,7 @@ def submit_report(request):
 @require_http_methods(["POST"])
 def classify_photo(request):
     """
-    Receive photo from the form, run AI classification, and return JSON.
+    Receive photo from the form, run AI classification, extract metadata, and return JSON.
     """
     try:
         photo = request.FILES.get('photo')
@@ -139,6 +170,13 @@ def classify_photo(request):
             temp_path = default_storage.path(temp_name)
             classification_result = real_classify_image(temp_path)
             classification_result = normalize_classification_result(classification_result)
+
+            # Extract EXIF metadata
+            meta = extract_exif_gps_and_metadata(temp_path)
+            if meta.get('has_gps'):
+                meta['address'] = reverse_geocode_nominatim(meta['latitude'], meta['longitude'])
+
+            classification_result['metadata'] = meta
             return JsonResponse(classification_result)
         finally:
             default_storage.delete(temp_name)
@@ -147,6 +185,26 @@ def classify_photo(request):
         import traceback
         traceback.print_exc()
         return JsonResponse({'error': f'Classification failed: {str(e)}'}, status=500)
+
+
+@csrf_exempt
+@require_http_methods(["POST"])
+def extract_metadata_api(request):
+    """
+    Fast endpoint to extract EXIF GPS metadata from an uploaded image.
+    """
+    try:
+        photo = request.FILES.get('photo')
+        if not photo:
+            return JsonResponse({'error': 'Şəkil tapılmadı.'}, status=400)
+
+        meta = extract_exif_gps_and_metadata(photo)
+        if meta.get('has_gps'):
+            meta['address'] = reverse_geocode_nominatim(meta['latitude'], meta['longitude'])
+
+        return JsonResponse(meta)
+    except Exception as e:
+        return JsonResponse({'error': f'Metadata xətası: {str(e)}'}, status=500)
 
 
 def track_report(request, citizen_token):
@@ -233,8 +291,8 @@ def test_email_view(request):
     if request.method == 'POST':
         to_email = request.POST.get('email', '').strip()
         if to_email:
-            subject = 'CityAssist — E-poçt Testi'
-            text_body = 'Bu CityAssist sisteminin test e-poçtudur. Əgər bunu görürsünüzsə, e-poçt xidməti düzgün işləyir!'
+            subject = 'ClearCity — E-poçt Testi'
+            text_body = 'Bu ClearCity sisteminin test e-poçtudur. Əgər bunu görürsünüzsə, e-poçt xidməti düzgün işləyir!'
             html_body = """
             <div style="font-family:Arial,sans-serif;max-width:480px;margin:30px auto;
                         background:#fff;border-radius:12px;overflow:hidden;
@@ -245,10 +303,10 @@ def test_email_view(request):
               </div>
               <div style="padding:30px;text-align:center;color:#555;">
                 <p style="font-size:16px;line-height:1.6;">
-                  CityAssist sisteminin e-poçt xidməti düzgün işləyir.<br>
+                  ClearCity sisteminin e-poçt xidməti düzgün işləyir.<br>
                   Bu test mesajını aldınızsa hər şey qaydasındadır!
                 </p>
-                <p style="color:#aaa;font-size:12px;margin-top:20px;">CityAssist Sistemi</p>
+                <p style="color:#aaa;font-size:12px;margin-top:20px;">ClearCity Sistemi</p>
               </div>
             </div>"""
             try:

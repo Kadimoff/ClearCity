@@ -9,5 +9,6 @@ urlpatterns = [
     path('r/<str:dept_token>/', views.department_report, name='department_report'),
     path('r/<str:dept_token>/update/', views.update_status, name='update_status'),
     path('api/classify-photo/', views.classify_photo, name='api_classify_photo'),
+    path('api/extract-metadata/', views.extract_metadata_api, name='api_extract_metadata'),
     path('test-email/', views.test_email_view, name='test_email'),
 ]

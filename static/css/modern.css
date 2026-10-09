@@ -1,5 +1,5 @@
 /* ============================================
-   CityAssist Modern Design System
+   ClearCity Modern Design System
    SaaS-style UI with gradient accents
    ============================================ */
 
@@ -1028,3 +1028,186 @@ img {
         justify-content: center;
     }
 }
+
+/* ============================================
+   Photo Source Tabs & Metadata Card Styles
+   ============================================ */
+.photo-source-selector {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-md);
+    margin-bottom: var(--space-lg);
+}
+
+.source-tab-btn {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    padding: var(--space-md) var(--space-lg);
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: white;
+    cursor: pointer;
+    transition: all var(--transition-base);
+    text-align: left;
+    width: 100%;
+}
+
+.source-tab-btn:hover {
+    border-color: var(--color-primary-light);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.source-tab-btn.active {
+    border-color: var(--color-primary);
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.08) 0%, rgba(139, 92, 246, 0.05) 100%);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+.source-icon-wrap {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-md);
+    background: var(--color-bg-alt);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    color: var(--color-primary);
+    transition: all var(--transition-base);
+    flex-shrink: 0;
+}
+
+.source-tab-btn.active .source-icon-wrap {
+    background: var(--gradient-primary);
+    color: white;
+}
+
+.source-text-wrap {
+    display: flex;
+    flex-direction: column;
+}
+
+.source-title {
+    font-weight: 700;
+    font-size: var(--font-size-base);
+    color: var(--color-text);
+}
+
+.source-subtitle {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-light);
+    margin-top: 2px;
+}
+
+.metadata-card {
+    border-radius: var(--radius-md);
+    padding: var(--space-md);
+    margin-top: var(--space-md);
+    font-size: var(--font-size-sm);
+    display: none;
+    animation: fadeIn 0.3s ease;
+}
+
+.metadata-card.show {
+    display: block;
+}
+
+.metadata-card.success {
+    background: #f0fdf4;
+    border: 1px solid #86efac;
+    color: #166534;
+}
+
+.metadata-card.warning {
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    color: #92400e;
+}
+
+.metadata-card.info {
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    color: #1e40af;
+}
+
+.metadata-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-weight: 700;
+    margin-bottom: var(--space-xs);
+}
+
+.metadata-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm) var(--space-lg);
+    margin-top: var(--space-xs);
+    font-size: 0.82rem;
+}
+
+.metadata-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.metadata-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    margin-top: var(--space-sm);
+}
+
+.btn-meta-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: var(--radius-sm);
+    font-size: 0.8rem;
+    font-weight: 600;
+    border: 1px solid;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-meta-action.btn-primary-action {
+    background: var(--color-primary);
+    color: white;
+    border-color: var(--color-primary);
+}
+
+.btn-meta-action.btn-secondary-action {
+    background: white;
+    color: var(--color-text);
+    border-color: var(--color-border);
+}
+
+.map-picker-box {
+    margin-top: var(--space-md);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    position: relative;
+}
+
+.map-picker-header {
+    padding: 6px 12px;
+    background: var(--color-bg-alt);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-light);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--color-border);
+}
+
+@media (max-width: 640px) {
+    .photo-source-selector {
+        grid-template-columns: 1fr;
+    }
+}
+

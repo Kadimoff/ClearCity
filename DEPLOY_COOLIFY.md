@@ -1,4 +1,4 @@
-# Деплой CityAssist в Coolify
+# Деплой ClearCity в Coolify
 
 ## 1. Подготовка
 1. Запушьте проект в GitHub/GitLab (`.env`, `db.sqlite3`, `media/` в git не попадают).
