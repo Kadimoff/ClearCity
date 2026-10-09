@@ -100,6 +100,15 @@ class Report(models.Model):
         default='medium'
     )
     citizen_email = models.EmailField(blank=True)
+    photo_source = models.CharField(
+        max_length=20,
+        choices=[('camera', 'Şəkil çək (Kamera)'), ('gallery', 'Şəkil yüklə (Qalereya)')],
+        default='gallery',
+        blank=True
+    )
+    has_exif_location = models.BooleanField(default=False)
+    camera_model = models.CharField(max_length=150, blank=True)
+    metadata_info = models.JSONField(default=dict, blank=True)
     dept_token = models.CharField(
         max_length=64,
         default=generate_dept_token,

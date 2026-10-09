@@ -3,7 +3,9 @@ import json
 import base64
 import secrets
 import random
+import urllib.request
 from pathlib import Path
+from PIL import Image, ExifTags
 from dotenv import load_dotenv
 from django.conf import settings
 
@@ -359,3 +361,124 @@ def get_priority_from_classification(classification_result):
     priority = classification_result.get("priority", "medium")
     valid_priorities = ["low", "medium", "high"]
     return priority if priority in valid_priorities else "medium"
+
+
+def _convert_dms_to_deg(dms):
+    if isinstance(dms, (tuple, list)):
+        d, m, s = float(dms[0]), float(dms[1]), float(dms[2])
+        return d + (m / 60.0) + (s / 3600.0)
+    return float(dms)
+
+
+def extract_exif_gps_and_metadata(image_source):
+    """
+    Extract EXIF GPS coordinates, camera model, and capture date from an image.
+    Supports file paths, Django UploadedFile, or file-like objects.
+    """
+    result = {
+        "has_gps": False,
+        "latitude": None,
+        "longitude": None,
+        "date_taken": None,
+        "camera_model": None,
+        "raw_metadata": {},
+    }
+    try:
+        if hasattr(image_source, 'seek'):
+            image_source.seek(0)
+
+        image = Image.open(image_source)
+        exif = image.getexif()
+        if not exif:
+            return result
+
+        # Basic camera info
+        make = str(exif.get(ExifTags.Base.Make) or '').strip()
+        model = str(exif.get(ExifTags.Base.Model) or '').strip()
+        camera = f"{make} {model}".strip()
+        if camera:
+            result["camera_model"] = camera
+
+        date_taken = exif.get(ExifTags.Base.DateTimeOriginal) or exif.get(ExifTags.Base.DateTime)
+        if date_taken:
+            result["date_taken"] = str(date_taken)
+
+        # GPS Info IFD
+        gps_ifd = None
+        if exif:
+            try:
+                gps_ifd = exif.get_ifd(ExifTags.IFD.GPSInfo)
+            except Exception:
+                pass
+            if not gps_ifd:
+                gps_ifd = exif.get(34853)
+
+        # Fallback to _getexif() on JPEG images
+        if not gps_ifd and hasattr(image, '_getexif'):
+            try:
+                raw_exif = image._getexif() or {}
+                gps_ifd = raw_exif.get(34853)
+                if not result["camera_model"]:
+                    make = str(raw_exif.get(271) or '').strip()
+                    model = str(raw_exif.get(272) or '').strip()
+                    camera = f"{make} {model}".strip()
+                    if camera:
+                        result["camera_model"] = camera
+                if not result["date_taken"]:
+                    dt = raw_exif.get(36867) or raw_exif.get(306)
+                    if dt:
+                        result["date_taken"] = str(dt)
+            except Exception:
+                pass
+
+        if gps_ifd and isinstance(gps_ifd, dict):
+            gps_data = {ExifTags.GPSTAGS.get(k, k): v for k, v in gps_ifd.items()}
+            lat = gps_data.get('GPSLatitude') or gps_ifd.get(2)
+            lat_ref = str(gps_data.get('GPSLatitudeRef') or gps_ifd.get(1) or 'N').upper()
+            lon = gps_data.get('GPSLongitude') or gps_ifd.get(4)
+            lon_ref = str(gps_data.get('GPSLongitudeRef') or gps_ifd.get(3) or 'E').upper()
+
+            if lat and lon:
+                lat_val = _convert_dms_to_deg(lat)
+                lon_val = _convert_dms_to_deg(lon)
+                if lat_val is not None and lon_val is not None:
+                    if 'S' in lat_ref:
+                        lat_val = -lat_val
+                    if 'W' in lon_ref:
+                        lon_val = -lon_val
+
+                    if -90 <= lat_val <= 90 and -180 <= lon_val <= 180:
+                        result["has_gps"] = True
+                        result["latitude"] = round(lat_val, 7)
+                        result["longitude"] = round(lon_val, 7)
+
+        result["raw_metadata"] = {
+            "camera": result["camera_model"],
+            "date": result["date_taken"],
+            "has_gps": result["has_gps"],
+            "lat": result["latitude"],
+            "lng": result["longitude"],
+        }
+    except Exception as e:
+        _safe_print(f"[EXIF ERROR] {e}")
+    finally:
+        if hasattr(image_source, 'seek'):
+            image_source.seek(0)
+
+    return result
+
+
+def reverse_geocode_nominatim(lat, lon):
+    """
+    Get human-readable address from coordinates using OpenStreetMap Nominatim.
+    """
+    try:
+        url = f"https://nominatim.openstreetmap.org/reverse?format=json&lat={lat}&lon={lon}&accept-language=az"
+        req = urllib.request.Request(url, headers={'User-Agent': 'CityAssist/1.0'})
+        with urllib.request.urlopen(req, timeout=4) as response:
+            data = json.loads(response.read().decode('utf-8'))
+            return data.get('display_name', '')
+    except Exception as e:
+        _safe_print(f"[GEOCODE ERROR] {e}")
+        return ''
+
