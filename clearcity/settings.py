@@ -30,6 +30,8 @@ if not DEBUG and not SECRET_KEY:
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY', '').strip().strip('"').strip("'")
 
 ALLOWED_HOSTS = env_list('ALLOWED_HOSTS', ['*'])
+if '*' not in ALLOWED_HOSTS:
+    ALLOWED_HOSTS += ['localhost', '127.0.0.1']  # container healthcheck
 CSRF_TRUSTED_ORIGINS = env_list('CSRF_TRUSTED_ORIGINS')
 
 

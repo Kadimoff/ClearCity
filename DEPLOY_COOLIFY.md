@@ -42,4 +42,4 @@ EMAIL_HOST_USER=...  EMAIL_HOST_PASSWORD=...  DEFAULT_FROM_EMAIL=...
 
 ## Типичные ошибки
 - `unable to open database file`: по умолчанию SQLite лежит в `/app/data/db.sqlite3`, добавьте volume на `/app/data` (или включите PostgreSQL).
-- Healthcheck unhealthy / 400: в `ALLOWED_HOSTS` добавьте `localhost,127.0.0.1` (healthcheck идёт на localhost).
+- `ALLOWED_HOSTS` задайте своим доменом: `localhost` и `127.0.0.1` для healthcheck добавляются автоматически.
