@@ -6,7 +6,7 @@ import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 
 export const metadata: Metadata = {
-  title: 'CityAssist — Smart City Issue Reporting',
+  title: 'ClearCity — Smart City Issue Reporting',
   description: 'Report municipal issues with AI classification, auto GPS detection, and real-time department tracking.',
 };
 
@@ -16,11 +16,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="az" className="scroll-smooth">
+    <html lang="az" className="scroll-smooth" suppressHydrationWarning>
       <head>
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
       </head>
-      <body className="antialiased min-h-screen flex flex-col">
+      <body className="antialiased min-h-screen flex flex-col" suppressHydrationWarning>
         <ThemeProvider>
           <LanguageProvider>
             <Navbar />

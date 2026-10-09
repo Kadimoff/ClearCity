@@ -3,7 +3,39 @@
 @tailwind utilities;
 
 @layer base {
-  body {
-    @apply bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 transition-colors duration-200;
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
   }
+
+  body {
+    @apply bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-300 overflow-x-hidden;
+  }
+}
+
+@layer utilities {
+  .glass-card {
+    @apply backdrop-blur-xl bg-white/80 dark:bg-slate-900/80 border border-slate-200/80 dark:border-slate-800/80 shadow-lg;
+  }
+
+  .glass-card-hover {
+    @apply glass-card hover:border-indigo-500/50 dark:hover:border-indigo-500/50 hover:shadow-neon-indigo transition-all duration-300;
+  }
+
+  .neon-border {
+    @apply border border-indigo-500/30 dark:border-indigo-500/40 hover:border-indigo-500 hover:shadow-neon-indigo transition-all duration-300;
+  }
+
+  .neon-gradient-text {
+    @apply bg-gradient-to-r from-indigo-500 via-purple-500 to-cyan-400 bg-clip-text text-transparent;
+  }
+}
+
+/* Hide Leaflet & OpenStreetMap attribution text completely */
+.leaflet-control-attribution,
+.leaflet-control-container .leaflet-bottom.leaflet-right {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
 }

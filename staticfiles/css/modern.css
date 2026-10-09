@@ -167,23 +167,32 @@ img {
     font-size: var(--font-size-xl);
 }
 
-.brand-icon {
-    width: 40px;
-    height: 40px;
-    background: var(--gradient-primary);
-    border-radius: var(--radius-md);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: var(--font-size-lg);
+.brand-logo-img {
+    height: 44px;
+    width: auto;
+    max-width: 220px;
+    object-fit: contain;
+    transition: transform var(--transition-fast);
 }
 
-.brand-text {
-    background: var(--gradient-primary);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+.logo-dark {
+    display: none;
+}
+
+.logo-light {
+    display: inline-block;
+}
+
+html.dark-mode .logo-light {
+    display: none !important;
+}
+
+html.dark-mode .logo-dark {
+    display: inline-block !important;
+}
+
+.brand-logo-img:hover {
+    transform: scale(1.03);
 }
 
 .navbar-controls {

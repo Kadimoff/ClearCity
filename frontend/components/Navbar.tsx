@@ -2,9 +2,10 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useLanguage } from '@/context/LanguageContext';
 import { useTheme } from '@/context/ThemeContext';
-import { Sun, Moon, Menu, X } from 'lucide-react';
+import { Sun, Moon, Menu, X, PlusCircle } from 'lucide-react';
 import { Language } from '@/lib/i18n';
 
 export const Navbar: React.FC = () => {
@@ -13,44 +14,53 @@ export const Navbar: React.FC = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 transition-colors">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-        {/* Brand */}
-        <Link href="/" className="flex items-center gap-2 font-extrabold text-xl bg-gradient-to-r from-indigo-500 to-purple-600 bg-clip-text text-transparent">
-          <span>🏙️ CityAssist</span>
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 dark:bg-slate-950/95 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800/80 transition-colors shadow-sm">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+        <Link href="/" className="flex items-center group py-1">
+          <img
+            src={theme === 'dark' ? '/images/logo-dark.png' : '/images/logo-light.png'}
+            alt="ClearCity Logo"
+            className="h-10 sm:h-12 w-auto object-contain transition-all duration-200 group-hover:scale-105"
+          />
         </Link>
 
-        {/* Desktop Links & Actions */}
+        {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-6">
-          <Link href="/" className="text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium transition-colors">
+          <Link
+            href="/"
+            className="text-slate-700 dark:text-slate-200 hover:text-indigo-600 dark:hover:text-indigo-400 font-semibold text-sm transition-colors"
+          >
             {t('nav_home')}
           </Link>
+
           <Link
             href="/report"
-            className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold px-5 py-2.5 rounded-full hover:shadow-lg hover:shadow-indigo-500/25 transition-all transform hover:-translate-y-0.5"
+            className="inline-flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold text-sm px-6 py-2.5 rounded-full shadow-md hover:shadow-indigo-500/25 transition-all transform hover:-translate-y-0.5 active:translate-y-0"
           >
-            {t('nav_report')}
+            <PlusCircle className="w-4 h-4" />
+            <span>{t('nav_report')}</span>
           </Link>
 
-          {/* Theme Toggle */}
+          {/* Theme Switcher */}
           <button
             onClick={toggleTheme}
-            className="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all"
+            className="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all border border-slate-200/60 dark:border-slate-700/60"
             aria-label="Toggle theme"
+            title="Toggle Light/Dark Theme"
           >
-            {theme === 'dark' ? <Sun className="w-5 h-5 text-amber-400" /> : <Moon className="w-5 h-5 text-slate-600" />}
+            {theme === 'dark' ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-slate-700" />}
           </button>
 
           {/* Language Selector */}
-          <div className="flex items-center p-1 bg-slate-100 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">
+          <div className="flex items-center p-1 bg-slate-100 dark:bg-slate-800/80 rounded-xl border border-slate-200/80 dark:border-slate-700/80">
             {(['az', 'en', 'ru'] as Language[]).map((l) => (
               <button
                 key={l}
                 onClick={() => setLang(l)}
                 className={`px-3 py-1 rounded-lg text-xs font-bold transition-all ${
                   lang === l
-                    ? 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-sm'
-                    : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white'
+                    ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-sm'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                 }`}
               >
                 {l.toUpperCase()}
@@ -60,58 +70,68 @@ export const Navbar: React.FC = () => {
         </div>
 
         {/* Mobile controls */}
-        <div className="flex md:hidden items-center gap-3">
+        <div className="flex md:hidden items-center gap-2">
+          {/* Theme button on mobile top bar */}
           <button
             onClick={toggleTheme}
-            className="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200"
+            className="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-200/60 dark:border-slate-700/60"
+            aria-label="Toggle theme"
           >
-            {theme === 'dark' ? <Sun className="w-5 h-5 text-amber-400" /> : <Moon className="w-5 h-5" />}
+            {theme === 'dark' ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4" />}
           </button>
 
+          {/* Hamburger button */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200"
+            className="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-200/60 dark:border-slate-700/60 transition-all"
+            aria-label="Toggle navigation menu"
           >
-            {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {mobileOpen ? <X className="w-5 h-5 text-indigo-600 dark:text-indigo-400" /> : <Menu className="w-5 h-5" />}
           </button>
         </div>
       </div>
 
-      {/* Mobile Drawer */}
+      {/* Mobile Menu Dropdown */}
       {mobileOpen && (
-        <div className="md:hidden bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-4 py-4 space-y-4">
+        <div className="md:hidden bg-white/98 dark:bg-slate-950/98 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 px-5 py-6 space-y-5 animate-in slide-in-from-top-2 duration-200">
           <Link
             href="/"
             onClick={() => setMobileOpen(false)}
-            className="block text-slate-700 dark:text-slate-200 font-medium hover:text-indigo-600"
+            className="block text-slate-800 dark:text-slate-100 font-bold text-base hover:text-indigo-600 py-1"
           >
             {t('nav_home')}
           </Link>
+
           <Link
             href="/report"
             onClick={() => setMobileOpen(false)}
-            className="block w-full text-center bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold py-3 rounded-xl"
+            className="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold py-3.5 rounded-2xl shadow-lg shadow-indigo-500/20 text-base"
           >
-            {t('nav_report')}
+            <PlusCircle className="w-5 h-5" />
+            <span>{t('nav_report')}</span>
           </Link>
 
-          <div className="flex justify-center p-1 bg-slate-100 dark:bg-slate-800 rounded-xl">
-            {(['az', 'en', 'ru'] as Language[]).map((l) => (
-              <button
-                key={l}
-                onClick={() => {
-                  setLang(l);
-                  setMobileOpen(false);
-                }}
-                className={`flex-1 py-2 text-xs font-bold rounded-lg ${
-                  lang === l
-                    ? 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white'
-                    : 'text-slate-500 dark:text-slate-400'
-                }`}
-              >
-                {l.toUpperCase()}
-              </button>
-            ))}
+          {/* Language Switcher in Mobile Drawer */}
+          <div className="pt-2 border-t border-slate-200 dark:border-slate-800">
+            <label className="block text-xs font-bold text-slate-400 uppercase mb-2">Language / Dili</label>
+            <div className="flex justify-between p-1 bg-slate-100 dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800">
+              {(['az', 'en', 'ru'] as Language[]).map((l) => (
+                <button
+                  key={l}
+                  onClick={() => {
+                    setLang(l);
+                    setMobileOpen(false);
+                  }}
+                  className={`flex-1 py-2.5 text-xs font-bold rounded-xl transition-all ${
+                    lang === l
+                      ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-sm'
+                      : 'text-slate-600 dark:text-slate-400'
+                  }`}
+                >
+                  {l.toUpperCase()}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       )}

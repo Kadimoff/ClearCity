@@ -1,7 +1,5 @@
 {
-  "/_not-found/page": "app/_not-found/page.js",
-  "/department/[token]/page": "app/department/[token]/page.js",
+  "/page": "app/page.js",
   "/report/page": "app/report/page.js",
-  "/track/[token]/page": "app/track/[token]/page.js",
-  "/page": "app/page.js"
+  "/track/[token]/page": "app/track/[token]/page.js"
 }

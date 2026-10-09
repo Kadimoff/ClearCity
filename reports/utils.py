@@ -16,13 +16,20 @@ except ImportError:
 
 from .models import Category, Department
 
-dotenv_path = Path(__file__).resolve().parent.parent / '.env'
-load_dotenv(dotenv_path)
+def get_openai_client():
+    """Dynamically get an OpenAI client from the latest .env value."""
+    dotenv_path = Path(__file__).resolve().parent.parent / '.env'
+    load_dotenv(dotenv_path, override=True)
+    key = os.getenv('OPENAI_API_KEY') or getattr(settings, 'OPENAI_API_KEY', None)
+    if key:
+        key = key.strip().strip('"').strip("'")
+    if OpenAI and key and not key.startswith('your-'):
+        try:
+            return OpenAI(api_key=key)
+        except Exception:
+            return None
+    return None
 
-OPENAI_API_KEY = os.getenv('OPENAI_API_KEY') or getattr(settings, 'OPENAI_API_KEY', None)
-if OPENAI_API_KEY:
-    OPENAI_API_KEY = OPENAI_API_KEY.strip().strip('"').strip("'")
-OPENAI_CLIENT = OpenAI(api_key=OPENAI_API_KEY) if OpenAI and OPENAI_API_KEY else None
 
 ALLOWED_CATEGORIES = [
     'road_damage',
@@ -115,8 +122,9 @@ def _parse_openai_response_text(payload):
 
 
 def classify_image_with_openai(image_path=None):
-    if OPENAI_CLIENT is None:
-        raise RuntimeError('OpenAI client is not configured. Set OPENAI_API_KEY in environment and install openai.')
+    client = get_openai_client()
+    if client is None:
+        raise RuntimeError('OpenAI client is not configured. Set OPENAI_API_KEY in environment.')
 
     with open(image_path, 'rb') as f:
         image_base64 = base64.b64encode(f.read()).decode('utf-8')
@@ -135,7 +143,7 @@ def classify_image_with_openai(image_path=None):
     )
 
     print('OpenAI image classification: sending request...')
-    response = OPENAI_CLIENT.chat.completions.create(
+    response = client.chat.completions.create(
         model='gpt-4o-mini',
         messages=[
             {
@@ -177,7 +185,8 @@ def real_classify_image(image_path=None):
     Use real OpenAI AI classification if available and valid;
     gracefully fall back to local classification if API error occurs.
     """
-    if OPENAI_CLIENT is None:
+    client = get_openai_client()
+    if client is None:
         print('WARNING: OpenAI client is not configured. Falling back to local classification.')
         return mock_classify_image(image_path)
 
@@ -190,7 +199,8 @@ def real_classify_image(image_path=None):
 
 
 def classify_image(image_path=None):
-    if OPENAI_CLIENT is None:
+    client = get_openai_client()
+    if client is None:
         print('WARNING: OpenAI client is not configured. Please set OPENAI_API_KEY in environment.')
         print('Falling back to mock classification.')
         return mock_classify_image(image_path)

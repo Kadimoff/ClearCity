@@ -1,137 +1,135 @@
-# ClearCity - City Issue Reporting System
+# ClearCity — Municipal Issue Reporting & AI Dispatch Platform
 
-A Django web application for citizens to report urban issues with photo upload, AI classification (OpenAI / mock), and department tracking.
+A senior-level decoupled civic tech platform combining a **Next.js 15 App Router (TypeScript + Tailwind CSS)** frontend with a **Django 6 REST Framework (DRF)** API backend, OpenAI Vision AI classification, EXIF GPS extraction, and multi-container Docker orchestration.
 
-## Features
+---
 
-- **Report Submission**: Upload photos, add address/description, auto GPS detection
-- **AI Classification**: AI categorizes issues (road damage, trash overflow, etc.)
-- **Department Assignment**: Automatic routing to relevant city departments
-- **Status Tracking**: Citizens can track report status via unique link
-- **Department Portal**: Departments can update status and add comments
-- **Admin Dashboard**: Full Django admin with filters and search
-
-## Project Structure
+## 🏗 Architecture & Stack Overview
 
 ```
-clearcity/
-├── clearcity/           # Django project settings
-├── reports/             # Main application
-│   ├── models.py        # Department, Category, Report, StatusHistory, AIClassification
-│   ├── views.py         # Home, tracking, department views
-│   ├── urls.py          # URL routing
-│   ├── admin.py         # Admin configuration
-│   ├── utils.py         # Mock AI, email, token generation
-│   └── management/      # Custom commands
-├── templates/           # Django templates
-│   ├── base.html
-│   └── reports/
-│       ├── home.html
-│       ├── tracking.html
-│       └── department.html
-├── static/              # CSS, JS
-└── media/               # Uploaded photos
+                        ┌──────────────────────────────────────────────┐
+                        │     Next.js 15 (App Router, TypeScript)      │
+                        │     Tailwind CSS + Dark/Light + i18n        │
+                        │     Frontend Server: http://localhost:3000   │
+                        └──────────────────────┬───────────────────────┘
+                                               │
+                                     JSON REST API / CORS
+                                               │
+                        ┌──────────────────────▼───────────────────────┐
+                        │  Django REST Framework (DRF) + Django 6      │
+                        │  ORM, OpenAI AI Classifier, EXIF, SMTP       │
+                        │  Backend API: http://localhost:8000/api/v1/  │
+                        └──────────────────────────────────────────────┘
 ```
 
-## Quick Start
+- **Frontend**: Next.js 15, React 19, TypeScript, Tailwind CSS, Lucide React, i18n (AZ, EN, RU), Dark/Light theme.
+- **Backend**: Django 6, Django REST Framework, Django CORS Headers, Gunicorn, Pillow, EXIF metadata parser, OpenAI Vision API with fallback.
+- **Database**: SQLite (local development) / PostgreSQL (production).
+- **Deployment**: Docker, Docker Compose, Coolify, Traefik.
 
-### 1. Install Dependencies
+---
+
+## 📁 Repository Structure
+
+```
+ClearCity/
+├── clearcity/                    # Django Core Configuration & WSGI/ASGI
+│   ├── settings.py               # Settings with DRF & CORS configurations
+│   ├── urls.py                   # Global routing & media security rules
+│   └── wsgi.py
+├── reports/                      # Core Django App
+│   ├── models.py                 # Department, Category, Report, StatusHistory, AIClassification
+│   ├── serializers.py            # DRF REST Serializers
+│   ├── api_views.py              # REST API ViewSets & endpoints
+│   ├── views.py                  # Legacy template views
+│   ├── utils.py                  # OpenAI image classifier & EXIF GPS extractor
+│   └── management/commands/      # Database seeding scripts
+├── core/                         # Utility modules & secure media serving
+├── frontend/                     # Decoupled Next.js 15 App Router
+│   ├── app/                      # Next.js Pages (/, /report, /track, /department)
+│   ├── components/               # Navbar, Footer, UI elements
+│   ├── context/                  # LanguageContext & ThemeContext
+│   ├── lib/                      # Axios API client & i18n dictionaries
+│   ├── Dockerfile                # Next.js production multi-stage build
+│   └── package.json
+├── docker-compose.yml            # Multi-container orchestration (Backend + Frontend)
+├── Dockerfile                    # Django production Docker build
+├── entrypoint.sh                 # Database migration & boot script
+├── requirements.txt              # Python backend dependencies
+└── manage.py
+```
+
+---
+
+## ⚡ Quick Start
+
+### Option 1: Docker Compose (Recommended)
+
+Run the full decoupled stack (Frontend + Backend) with a single command:
 
 ```bash
+docker compose up --build
+```
+
+- **Next.js Frontend**: http://localhost:3000
+- **Django REST API**: http://localhost:8000/api/v1/
+
+---
+
+### Option 2: Local Manual Setup
+
+#### 1. Backend Setup (Django REST API)
+
+```bash
+# Create and activate virtual environment
+python -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+
+# Install dependencies
 pip install -r requirements.txt
-```
 
-### 2. Run Migrations
-
-```bash
+# Run database migrations & seed initial data
 python manage.py migrate
-```
-
-### 3. Seed Initial Data (Departments & Categories)
-
-```bash
 python manage.py seed_data
-```
 
-### 4. Create Superuser
-
-```bash
+# Create superuser for Django Admin
 python manage.py createsuperuser
+
+# Start Django API backend
+python manage.py runserver 0.0.0.0:8000
 ```
 
-### 5. Run Development Server
+#### 2. Frontend Setup (Next.js 15)
 
 ```bash
-python manage.py runserver
+cd frontend
+
+# Install Node dependencies
+npm install
+
+# Start Next.js development server
+npm run dev
 ```
 
-### 6. Access the Application
+- **Frontend Application**: http://localhost:3000
+- **Django REST API**: http://localhost:8000/api/v1/categories/
+- **Django Admin Panel**: http://localhost:8000/admin/ *(admin / admin123)*
 
-- **Home Page (Submit Report)**: http://127.0.0.1:8000/
-- **Admin Panel**: http://127.0.0.1:8000/admin/
-  - Username: `admin`
-  - Password: `admin123`
+---
 
-### 7. Secure the Environment
+## 🔌 REST API Specifications
 
-- Copy `.env.example` to `.env` and keep the real `.env` out of git.
-- Set `SECRET_KEY`, `OPENAI_API_KEY`, `ALLOWED_HOSTS`, and `CSRF_TRUSTED_ORIGINS` before publishing.
-- Do not commit `db.sqlite3` or uploaded files in `media/`.
+| Method | Endpoint | Description |
+|---|---|---|
+| `GET` | `/api/v1/categories/` | List all available issue categories |
+| `GET` | `/api/v1/departments/` | List active municipal departments |
+| `POST` | `/api/v1/reports/` | Submit report (photo upload, address, GPS, description) |
+| `GET` | `/api/v1/reports/track/<token>/` | Fetch real-time status & audit history by token |
+| `POST` | `/api/v1/reports/update-status/<token>/` | Department status update endpoint |
+| `POST` | `/api/v1/classify-photo/` | Standalone AI image classification endpoint |
 
-## Usage Flow
+---
 
-1. **Citizen submits report** via home page (`/`)
-   - Upload photo, enter address & description
-   - Optional: Get GPS coordinates
-   - AI mock classification assigns category & department
+## 📄 License
 
-2. **Redirect to tracking page** (`/track/<citizen_token>/`)
-   - View report status, photo, location map
-   - See AI classification results
-   - View status history
-
-3. **Department updates status** via department page (`/r/<dept_token>/`)
-   - View full report details
-   - Update status (Accept → In Progress → Resolved/Rejected)
-   - Add status change comments
-
-## Database
-
-Defaults to **SQLite** for easy local development.
-
-To use **PostgreSQL**:
-1. Set `USE_POSTGRES=true` in environment
-2. Configure `DB_NAME`, `DB_USER`, `DB_PASSWORD`, `DB_HOST`, `DB_PORT`
-3. Run migrations
-
-## Models
-
-- **Department**: City departments with email/phone
-- **Category**: Issue types linked to departments
-- **Report**: Core model with UUID, tokens, status, priority, GPS
-- **StatusHistory**: Audit trail of status changes
-- **AIClassification**: Mock AI results
-
-## API Endpoints
-
-| Route | Description |
-|-------|-------------|
-| `/` | Report submission form |
-| `/submit/` | POST: Submit new report |
-| `/track/<citizen_token>/` | Citizen tracking page |
-| `/r/<dept_token>/` | Department view page |
-| `/r/<dept_token>/update/` | POST: Update status |
-| `/api/mock-classify/` | Test: Get mock AI classification |
-| `/admin/` | Django admin panel |
-
-## Technology Stack
-
-- **Backend**: Django 6.0+
-- **Database**: SQLite (default) / PostgreSQL (optional)
-- **Frontend**: Django Templates, Bootstrap 5, Leaflet.js
-- **Maps**: OpenStreetMap via Leaflet.js
-- **Images**: Pillow for image handling
-
-## License
-
-MIT License
+MIT License &copy; 2026 ClearCity

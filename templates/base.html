@@ -30,8 +30,9 @@
     <!-- Navigation -->
     <nav class="navbar" id="navbar">
         <div class="navbar-container">
-            <a href="{% url 'home' %}" class="navbar-brand">
-                <span class="brand-text">CityAssist</span>
+            <a href="{% url 'home' %}" class="navbar-brand" aria-label="ClearCity Home">
+                <img src="{% static 'images/logo-light.png' %}" alt="ClearCity Logo" class="brand-logo-img logo-light">
+                <img src="{% static 'images/logo-dark.png' %}" alt="ClearCity Logo" class="brand-logo-img logo-dark">
             </a>
 
             <div class="navbar-controls">
