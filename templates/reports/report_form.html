@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Problem haqqında bildirin — CityAssist{% endblock %}
+{% block title %}Problem haqqında bildirin — ClearCity{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -598,7 +598,7 @@
             try {
                 const response = await fetch(
                     `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&accept-language=az`,
-                    { headers: { 'User-Agent': 'CityAssist/1.0' } }
+                    { headers: { 'User-Agent': 'ClearCity/1.0' } }
                 );
                 if (response.ok) {
                     const data = await response.json();

@@ -11,7 +11,7 @@ class Command(BaseCommand):
 
         # Use configured email so department notifications go to a real inbox.
         # In production, update each department's email via Django admin.
-        default_email = settings.EMAIL_HOST_USER or 'admin@cityassist.az'
+        default_email = settings.EMAIL_HOST_USER or 'admin@clearcity.az'
 
         # Create departments
         departments_data = [

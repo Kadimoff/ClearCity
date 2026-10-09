@@ -1,5 +1,5 @@
 /**
- * CityAssist Modern UI JavaScript
+ * ClearCity Modern UI JavaScript
  * Handles interactions, animations, and form functionality
  */
 
@@ -290,7 +290,7 @@ async function getAddressFromCoords(lat, lng) {
     try {
         const response = await fetch(
             `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&accept-language=az`,
-            { headers: { 'User-Agent': 'CityAssist/1.0' } }
+            { headers: { 'User-Agent': 'ClearCity/1.0' } }
         );
 
         if (!response.ok) {
