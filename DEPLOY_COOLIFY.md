@@ -39,3 +39,7 @@ EMAIL_HOST_USER=...  EMAIL_HOST_PASSWORD=...  DEFAULT_FROM_EMAIL=...
 - HTTPS обеспечивает Coolify (Traefik), Django доверяет заголовку `X-Forwarded-Proto`.
 - Медиа отдаёт Django (`django.views.static.serve`): для хакатона достаточно, для нагрузки лучше S3/nginx.
 - Nominatim (геокодер) блокирует запросы из браузера; для адреса по GPS нужен серверный прокси.
+
+## Типичные ошибки
+- `unable to open database file`: по умолчанию SQLite лежит в `/app/data/db.sqlite3`, добавьте volume на `/app/data` (или включите PostgreSQL).
+- Healthcheck unhealthy / 400: в `ALLOWED_HOSTS` добавьте `localhost,127.0.0.1` (healthcheck идёт на localhost).
