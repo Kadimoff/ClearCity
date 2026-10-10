@@ -227,12 +227,11 @@
         // Initialize Leaflet Map
         const defaultLat = 40.4093;
         const defaultLng = 49.8671;
-        const map = L.map('interactiveMap', {
-            attributionControl: false
-        }).setView([defaultLat, defaultLng], 12);
+        const map = L.map('interactiveMap').setView([defaultLat, defaultLng], 12);
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             referrerPolicy: 'strict-origin-when-cross-origin',
-            maxZoom: 19
+            maxZoom: 19,
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
         setTimeout(function() {
