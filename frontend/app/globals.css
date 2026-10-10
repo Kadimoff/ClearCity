@@ -31,11 +31,15 @@
   }
 }
 
-/* Hide Leaflet & OpenStreetMap attribution text completely */
-.leaflet-control-attribution,
-.leaflet-control-container .leaflet-bottom.leaflet-right {
-  display: none !important;
-  visibility: hidden !important;
-  opacity: 0 !important;
-  pointer-events: none !important;
+/* Keep Leaflet attribution visible but subtle (required by the OSM tile policy) */
+.leaflet-control-attribution {
+  font-size: 10px !important;
+  background: rgba(255, 255, 255, 0.7) !important;
+}
+.dark .leaflet-control-attribution {
+  background: rgba(15, 23, 42, 0.7) !important;
+  color: #94a3b8 !important;
+}
+.dark .leaflet-control-attribution a {
+  color: #818cf8 !important;
 }

@@ -55,16 +55,16 @@ export const LocationPickerMap: React.FC<LocationPickerMapProps> = ({
         const initialLat = latitude || 40.4093;
         const initialLng = longitude || 49.8671;
 
-        // Create map with attributionControl disabled to hide Leaflet text
+        // Create map (keep attribution visible — required by the OSM tile policy)
         const map = L.map(mapContainerRef.current, {
-          attributionControl: false,
           zoomControl: true,
         }).setView([initialLat, initialLng], latitude ? 15 : 12);
 
-        // Add CartoDB Voyager tiles
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+        // OpenStreetMap standard tiles — no API key required
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
           maxZoom: 19,
-          subdomains: 'abcd',
+          referrerPolicy: 'strict-origin-when-cross-origin',
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
         }).addTo(map);
 
         mapInstanceRef.current = map;
